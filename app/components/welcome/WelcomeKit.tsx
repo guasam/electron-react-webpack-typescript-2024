@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import EraShape from './EraShape'
 import EraContent from './contents/EraContent'
 import ElectronContent from './contents/ElectronContent'
@@ -8,6 +8,7 @@ import ShadContent from './contents/ShadContent'
 import TailwindContent from './contents/TailwindContent'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Badge } from '../ui/badge'
+import { useTheme } from '@/app/components/theme/ThemeProvider'
 import './styles.css'
 
 export default function WelcomeKit() {
@@ -68,20 +69,12 @@ export default function WelcomeKit() {
 }
 
 const DarkModeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false)
-
-  useEffect(() => {
-    setIsDarkMode(document.documentElement.classList.contains('dark'))
-  }, [])
-
-  const toggleDarkMode = () => {
-    document.documentElement.classList.toggle('dark')
-    setIsDarkMode(!isDarkMode)
-  }
+  const { theme, toggleTheme } = useTheme()
+  const isDarkMode = theme === 'dark'
 
   return (
     <div className="flex justify-center items-center gap-2 text-sm cursor-pointer">
-      <Badge variant="secondary" onClick={toggleDarkMode}>
+      <Badge variant="secondary" onClick={toggleTheme}>
         {isDarkMode ? 'Dark Mode' : 'Light Mode'}
       </Badge>
     </div>

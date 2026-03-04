@@ -4,6 +4,7 @@
   "compilerOptions": {
     "composite": true,
     "moduleResolution": "bundler",
+    "jsx": "react-jsx",
     "types": ["electron-vite/node"],
     "baseUrl": ".",
     "paths": {
