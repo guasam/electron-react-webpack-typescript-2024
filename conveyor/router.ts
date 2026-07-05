@@ -1,8 +1,8 @@
 import type { BrowserWindow } from 'electron'
 import { createRouter } from 'electron-conveyor/main'
-import { appModule } from './app'
-import { webModule } from './web'
-import { windowModule, setupWindowEvents } from './window'
+import { appModule } from './modules/app'
+import { webModule } from './modules/web'
+import { windowModule, setupWindowEvents } from './modules/window'
 
 /**
  * The app's IPC surface. Runtime is MAIN-ONLY; the renderer imports only `type AppRouter`

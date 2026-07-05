@@ -1,7 +1,7 @@
 import { createConveyorClient, createConveyorHooks } from 'electron-conveyor/renderer'
 import type { ConveyorQueryHook, ConveyorMutationHook, ConveyorEventHook } from 'electron-conveyor/renderer'
 // Type-only import — erased at build, so no main-process runtime enters the renderer bundle.
-import type { AppRouter } from '@/conveyor/router'
+import type { AppRouter } from './router'
 
 /** The typed conveyor client for the renderer. */
 export const conveyor = createConveyorClient<AppRouter>()

@@ -1,4 +1,4 @@
-import type { conveyor } from '@/app/lib/conveyor'
+import type { conveyor } from '@/conveyor/client'
 
 export type Conveyor = typeof conveyor
 

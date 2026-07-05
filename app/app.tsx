@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { conveyor, useConveyorQuery, useConveyorEvent } from '@/app/lib/conveyor'
+import { conveyor, useConveyorQuery, useConveyorEvent } from '@/conveyor/client'
 import { useConveyorStore } from 'electron-conveyor/renderer'
 import { counterStore } from '@/conveyor/stores/counter'
 import './styles/app.css'
