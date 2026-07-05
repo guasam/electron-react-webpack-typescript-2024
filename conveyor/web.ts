@@ -1,6 +1,6 @@
 import { shell } from 'electron'
 import { z } from 'zod'
-import { defineModule, procedure } from '@/lib/conveyor/define'
+import { defineModule, procedure } from 'electron-conveyor/define'
 
 /** Web-content operations act on the *calling* frame (`ctx.sender`), so they work in any window. */
 export const webModule = defineModule('web', {

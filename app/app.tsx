@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { conveyor, useConveyorQuery, useConveyorEvent } from '@/app/lib/conveyor'
-import { useConveyorStore } from '@/lib/conveyor/renderer'
+import { useConveyorStore } from 'electron-conveyor/renderer'
 import { counterStore } from '@/conveyor/stores/counter'
 import './styles/app.css'
 

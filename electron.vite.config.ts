@@ -49,6 +49,9 @@ export default defineConfig({
     },
     resolve: {
       alias: aliases,
+      // electron-conveyor is a file:-linked package with its own node_modules; dedupe forces
+      // these peers to a single copy (the app's) so React context/hooks don't break.
+      dedupe: ['react', 'react-dom', '@tanstack/react-query', 'zustand'],
     },
     plugins: [tailwindcss(), react()],
   },

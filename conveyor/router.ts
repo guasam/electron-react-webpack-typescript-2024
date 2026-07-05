@@ -1,5 +1,5 @@
 import type { BrowserWindow } from 'electron'
-import { createRouter } from '@/lib/conveyor/main'
+import { createRouter } from 'electron-conveyor/main'
 import { appModule } from './app'
 import { webModule } from './web'
 import { windowModule, setupWindowEvents } from './window'

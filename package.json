@@ -10,8 +10,6 @@
   },
   "scripts": {
     "dev": "cross-env ELECTRON_DISABLE_SANDBOX=1 electron-vite dev -w",
-    "test": "vitest run",
-    "test:watch": "vitest",
     "format": "prettier --write --list-different .",
     "lint": "eslint . --ext .ts,.tsx --fix",
     "start": "electron-vite preview",
@@ -43,6 +41,7 @@
     "@tanstack/react-query-devtools": "^5.101.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "electron-conveyor": "file:../electron-conveyor",
     "radix-ui": "^1.6.1",
     "tailwind-merge": "^3.6.0",
     "zod": "^4.4.3",
@@ -73,7 +72,6 @@
     "react-dom": "^19.2.7",
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3",
-    "vite": "^7.3.1",
-    "vitest": "^4.1.9"
+    "vite": "^7.3.1"
   }
 }

@@ -1,7 +1,7 @@
 import { BrowserWindow } from 'electron'
 import { z } from 'zod'
-import { defineModule, procedure, event } from '@/lib/conveyor/define'
-import { createEmitter } from '@/lib/conveyor/main'
+import { defineModule, procedure, event } from 'electron-conveyor/define'
+import { createEmitter } from 'electron-conveyor/main'
 
 const windowInit = z.object({
   width: z.number(),

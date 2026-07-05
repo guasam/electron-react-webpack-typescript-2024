@@ -1,4 +1,4 @@
-import { createConveyorClient, createConveyorHooks } from '@/lib/conveyor/renderer'
+import { createConveyorClient, createConveyorHooks } from 'electron-conveyor/renderer'
 // Type-only import — erased at build, so no main-process runtime enters the renderer bundle.
 import type { AppRouter } from '@/conveyor/router'
 
