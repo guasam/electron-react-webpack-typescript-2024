@@ -1,16 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import icon from '@/resources/build/icon.png?asset'
-import { WindowContextProvider, menuItems } from '@/app/components/window'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import App from './app'
+
+const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <WindowContextProvider titlebar={{ title: 'electron-react-app', icon, menuItems }}>
+      <QueryClientProvider client={queryClient}>
         <App />
-      </WindowContextProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   </React.StrictMode>
 )

@@ -1,15 +1,5 @@
-import { contextBridge } from 'electron'
-import { conveyor } from '@/lib/conveyor/api'
+import { exposeConveyor } from '@/lib/conveyor/preload'
 
-// Use `contextBridge` APIs to expose APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
-if (process.contextIsolated) {
-  try {
-    contextBridge.exposeInMainWorld('conveyor', conveyor)
-  } catch (error) {
-    console.error(error)
-  }
-} else {
-  window.conveyor = conveyor
-}
+// Expose the minimal conveyor bridge (invoke + subscribe) to the renderer.
+// The typed client Proxy is built renderer-side over this.
+exposeConveyor()

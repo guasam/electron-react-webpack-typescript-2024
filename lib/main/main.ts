@@ -1,6 +1,8 @@
 import { app, BrowserWindow } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { createAppWindow } from './app'
+import { registerResourcesProtocol } from './protocols'
+import { registerStores } from '@/conveyor/stores'
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -8,7 +10,13 @@ import { createAppWindow } from './app'
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
-  // Create app window
+
+  // Register the custom resources protocol once, and all cross-window stores.
+  registerResourcesProtocol()
+  registerStores()
+
+  // PoC: open TWO windows so we can watch the conveyor store keep them in sync.
+  createAppWindow()
   createAppWindow()
 
   // Default open or close DevTools by F12 in development

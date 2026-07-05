@@ -4,3 +4,5 @@ out
 .DS_Store
 *.log*
 temp
+# TypeScript incremental build info
+*.tsbuildinfo

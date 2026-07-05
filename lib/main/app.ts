@@ -1,14 +1,9 @@
 import { BrowserWindow, shell, app } from 'electron'
 import { join } from 'path'
 import appIcon from '@/resources/build/icon.png?asset'
-import { registerResourcesProtocol } from './protocols'
-import { registerWindowHandlers } from '@/lib/conveyor/handlers/window-handler'
-import { registerAppHandlers } from '@/lib/conveyor/handlers/app-handler'
+import { setupEvents } from '@/conveyor/router'
 
 export function createAppWindow(): void {
-  // Register custom protocol for resources
-  registerResourcesProtocol()
-
   // Create the main window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -27,9 +22,9 @@ export function createAppWindow(): void {
     },
   })
 
-  // Register IPC events for the main window.
-  registerWindowHandlers(mainWindow)
-  registerAppHandlers(app)
+  // Wire per-window push events. Procedure handlers are registered once, globally, via the
+  // `@/conveyor/router` import side-effect and resolve the calling window from each invoke.
+  setupEvents(mainWindow)
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()

@@ -7,6 +7,7 @@ import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 const aliases = {
   '@/app': resolve(__dirname, 'app'),
   '@/lib': resolve(__dirname, 'lib'),
+  '@/conveyor': resolve(__dirname, 'conveyor'),
   '@/resources': resolve(__dirname, 'resources'),
 }
 
