@@ -1,8 +1,12 @@
 import { app, BrowserWindow } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
+import { createWindowManager } from 'electron-conveyor/main'
 import { createAppWindow } from './app'
 import { registerResourcesProtocol } from './protocols'
 import { registerStores } from '@/conveyor/stores'
+
+/** Tracks every window by label; the substrate for cross-window targeting. */
+export const windows = createWindowManager()
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -16,8 +20,8 @@ app.whenReady().then(() => {
   registerStores()
 
   // PoC: open TWO windows so we can watch the conveyor store keep them in sync.
-  createAppWindow()
-  createAppWindow()
+  windows.register('w1', createAppWindow())
+  windows.register('w2', createAppWindow())
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

@@ -3,7 +3,7 @@ import { join } from 'path'
 import appIcon from '@/resources/build/icon.png?asset'
 import { setupEvents } from '@/conveyor/router'
 
-export function createAppWindow(): void {
+export function createAppWindow(): BrowserWindow {
   // Create the main window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -48,4 +48,6 @@ export function createAppWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  return mainWindow
 }
