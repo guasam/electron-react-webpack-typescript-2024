@@ -30,8 +30,14 @@ export function createAppWindow(): void {
     mainWindow.show()
   })
 
-  mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url)
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    // Only hand http(s) URLs to the OS — never arbitrary protocol handlers.
+    try {
+      const { protocol } = new URL(url)
+      if (protocol === 'https:' || protocol === 'http:') shell.openExternal(url)
+    } catch {
+      // malformed URL — ignore
+    }
     return { action: 'deny' }
   })
 

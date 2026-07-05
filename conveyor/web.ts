@@ -22,6 +22,15 @@ export const webModule = defineModule('web', {
     if (win) win.setFullScreen(!win.isFullScreen())
   }),
   openUrl: procedure()
-    .input(z.string())
+    .input(
+      z.string().refine((s) => {
+        try {
+          const { protocol } = new URL(s)
+          return protocol === 'https:' || protocol === 'http:'
+        } catch {
+          return false
+        }
+      }, 'Only http(s) URLs may be opened externally')
+    )
     .handle(({ input }) => shell.openExternal(input)),
 })
