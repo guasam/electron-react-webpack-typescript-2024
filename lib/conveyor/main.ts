@@ -1,4 +1,4 @@
-import { ipcMain, BrowserWindow } from 'electron'
+import { app, ipcMain, BrowserWindow } from 'electron'
 import { dispatchProcedure } from './dispatch'
 import type { AnyModule, EventEmitters, HandlerContext, ModuleMap, Router } from './types'
 
@@ -6,6 +6,12 @@ import type { AnyModule, EventEmitters, HandlerContext, ModuleMap, Router } from
 //   import { createRouter, createEmitter, registerStore } from '@/lib/conveyor/main'
 export { registerStore } from './store-main'
 export type { StoreHandle } from './store-main'
+
+// Dev flag via Electron's own signal. We avoid Vite's `import.meta.env.DEV` here: this file runs
+// in the Electron main process, and when conveyor is consumed as an externalized package it is not
+// transformed by the app's Vite build, so `import.meta.env` would be undefined at runtime.
+// `app.isPackaged` is accurate in both dev and packaged builds and needs no env vars.
+const isDev = !app.isPackaged
 
 /**
  * Register every module's procedures on the main process. One `ipcMain.handle` per module
@@ -28,8 +34,8 @@ function registerModule(mod: AnyModule): void {
       sender: event.sender,
       window: BrowserWindow.fromWebContents(event.sender),
     }
-    const result = await dispatchProcedure(mod, method, input, ctx, import.meta.env.DEV)
-    if (!result.ok && import.meta.env.DEV) {
+    const result = await dispatchProcedure(mod, method, input, ctx, isDev)
+    if (!result.ok && isDev) {
       console.error(`[conveyor] ${result.error.code}: ${result.error.message}`, result.error.issues ?? '')
     }
     return result
@@ -49,7 +55,7 @@ export function createEmitter<TModule extends AnyModule>(mod: TModule, win: Brow
     const channel = `conveyor:event:${mod.id}:${key}`
 
     emitters[key] = (payload: unknown) => {
-      if (import.meta.env.DEV) def.payload.parse(payload)
+      if (isDev) def.payload.parse(payload)
       if (!win.isDestroyed()) win.webContents.send(channel, payload)
     }
   }
