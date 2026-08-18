@@ -1,9 +1,8 @@
-import { registerStore } from 'electron-conveyor/main'
-import { counterStore } from './counter'
+import { registerDemoStores } from '../demo'
 
 /** Register all cross-window stores on the main process. Call once at startup. */
 export function registerStores() {
   return {
-    counter: registerStore(counterStore),
+    ...registerDemoStores(), // playground — remove to strip
   }
 }
