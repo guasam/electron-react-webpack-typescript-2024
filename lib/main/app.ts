@@ -14,8 +14,6 @@ export function createAppWindow(): BrowserWindow {
     frame: false,
     titleBarStyle: 'hiddenInset',
     title: 'Electron React App',
-    maximizable: false,
-    resizable: false,
     webPreferences: {
       preload: join(__dirname, '../preload/preload.js'),
       sandbox: false,

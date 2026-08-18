@@ -2,6 +2,9 @@
 @source '@/app';
 @source '@/lib';
 
+/* Dark mode driven by a `.dark` class on <html> (toggled by the theme store), not media query. */
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -34,6 +37,7 @@
 
 @layer base {
   :root {
+    color-scheme: light;
     --background: var(--color-neutral-50);
     --foreground: var(--color-neutral-900);
     --card: hsl(0 0% 100%);
@@ -62,6 +66,7 @@
   }
 
   .dark {
+    color-scheme: dark;
     --background: var(--color-neutral-950);
     --foreground: var(--color-neutral-100);
     --card: hsl(0, 0%, 3.9%);

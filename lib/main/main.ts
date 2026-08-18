@@ -19,9 +19,9 @@ app.whenReady().then(() => {
   registerResourcesProtocol()
   registerStores()
 
-  // PoC: open TWO windows so we can watch the conveyor store keep them in sync.
-  windows.register('w1', createAppWindow())
-  windows.register('w2', createAppWindow())
+  // Open the main window. (The playground's Store page opens a second window on demand to
+  // demonstrate cross-window sync — core apps ship a single window.)
+  windows.register('main', createAppWindow())
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
