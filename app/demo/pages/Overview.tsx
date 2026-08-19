@@ -34,7 +34,7 @@ export function Overview({ onNavigate }: PageProps) {
         })}
       </div>
       <p className="text-xs text-muted-foreground">
-        This whole playground is strippable: delete <code className="text-foreground/70">app/playground</code> and{' '}
+        This whole playground is strippable: delete <code className="text-foreground/70">app/demo</code> and{' '}
         <code className="text-foreground/70">conveyor/demo</code>, remove a few marked lines, and you have a clean
         themed shell to build on.
       </p>

@@ -1,28 +1,53 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { Minus, Square, Copy, X, Sun, Moon } from 'lucide-react'
+import appIcon from '@/resources/build/icon.png'
 import { conveyor } from '@/conveyor/client'
 import { cn } from '@/lib/utils'
 import { useWindowStore } from './window-store'
 import { useThemeStore } from './theme-store'
+import { TitlebarMenu } from './TitlebarMenu'
 
 /**
  * Custom window titlebar: core shell chrome, styled with Tailwind on the theme tokens (no legacy
- * window.css). A conveyor consumer itself: the controls call the `window` module. macOS keeps its
- * native inset traffic lights; win32/linux render these controls.
+ * window.css). A conveyor consumer itself: the menu + controls call the window/web modules. macOS
+ * keeps its native inset traffic lights; win32/linux render these controls.
  */
 export function Titlebar({ title = 'Electron React App' }: { title?: string }) {
   const platform = useWindowStore((s) => s.platform)
+  const menuVisible = useWindowStore((s) => s.menuVisible)
+  const toggleMenu = useWindowStore((s) => s.toggleMenu)
   const isMac = platform === 'darwin'
+
+  // Alt shows/hides the menu bar, like a normal Electron window.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Alt' && !e.repeat) {
+        e.preventDefault()
+        toggleMenu()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [toggleMenu])
 
   return (
     <header
       className={cn(
-        'flex h-10 shrink-0 items-center border-b border-border bg-background/95 select-none [-webkit-app-region:drag]',
-        isMac && 'pl-20'
+        'relative flex h-10 shrink-0 items-center border-b border-border bg-background/95 select-none [-webkit-app-region:drag]',
+        isMac && 'pl-16'
       )}
     >
-      <div className="flex-1 truncate px-3 text-[13px] font-medium text-foreground/70">{title}</div>
-      <div className="flex items-center [-webkit-app-region:no-drag]">
+      <div className="flex items-center gap-1.5 pl-2.5 [-webkit-app-region:no-drag]">
+        <img src={appIcon} alt="" className="size-4" />
+        {menuVisible && <TitlebarMenu />}
+      </div>
+
+      {/* Centered title. pointer-events-none so the drag region shows through. */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <span className="text-[13px] font-medium text-foreground/60">{title}</span>
+      </div>
+
+      <div className="ml-auto flex items-center [-webkit-app-region:no-drag]">
         <ThemeToggle />
         {!isMac && <WindowControls />}
       </div>

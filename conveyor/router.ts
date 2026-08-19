@@ -1,6 +1,7 @@
 import type { BrowserWindow } from 'electron'
 import { createRouter } from 'electron-conveyor/main'
 import { windowModule, setupWindowEvents } from './modules/window'
+import { webModule } from './modules/web'
 import { demoModules } from './demo'
 
 /**
@@ -14,7 +15,8 @@ const APP_STARTED_AT = Date.now()
 export const router = createRouter(
   {
     window: windowModule,
-    ...demoModules, // playground — remove this spread to strip
+    web: webModule,
+    ...demoModules, // playground: remove this spread to strip
   },
   {
     createContext: () => ({ appStartedAt: APP_STARTED_AT }),

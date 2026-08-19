@@ -6,7 +6,7 @@ import { Toaster, useToasts } from './components/toast'
 
 /**
  * The playground - a sidebar-nav tour of every conveyor primitive, each a live demo plus its code.
- * Strippable: delete this `app/playground/` folder and the `<Playground/>` in App.tsx.
+ * Strippable: delete this `app/demo/` folder and the `<Playground/>` in App.tsx.
  */
 export function Playground() {
   const [active, setActive] = useState('overview')
