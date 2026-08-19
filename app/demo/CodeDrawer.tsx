@@ -20,11 +20,11 @@ export function CodeDrawer({
     <div
       aria-hidden={!open}
       className={cn(
-        'absolute top-0 right-0 z-30 flex h-full w-[440px] max-w-[88%] flex-col border-l border-border bg-card shadow-2xl transition-transform duration-200 ease-out',
+        'absolute top-0 right-0 z-30 flex h-full w-110 max-w-[88%] flex-col border-l border-border bg-card shadow-2xl transition-transform duration-200 ease-out',
         open ? 'translate-x-0' : 'pointer-events-none translate-x-full'
       )}
     >
-      <div className="flex h-[42px] flex-none items-center justify-between border-b border-border px-3">
+      <div className="flex h-10.5 flex-none items-center justify-between border-b border-border px-3">
         <span className="rounded-md bg-muted px-2.5 py-1.5 font-mono text-[11px] font-medium text-foreground/80">
           {snip.file}
         </span>

@@ -37,7 +37,7 @@ export function Titlebar({ title = 'Electron React App' }: { title?: string }) {
       )}
     >
       <div className="flex items-center gap-2.5 pl-3 [-webkit-app-region:no-drag]">
-        <span className="size-[13px] rounded-[4px] bg-brand ring-[3px] ring-brand/20" />
+        <span className="size-3.25 rounded-lg bg-brand ring-[3px] ring-brand/20" />
         {menuVisible && <TitlebarMenu />}
       </div>
 
