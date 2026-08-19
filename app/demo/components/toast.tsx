@@ -31,11 +31,11 @@ export function Toaster() {
   const dismiss = useToasts((s) => s.dismiss)
 
   return (
-    <div className="pointer-events-none fixed right-4 bottom-4 z-50 flex flex-col gap-2">
+    <div className="pointer-events-none fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-2">
       {toasts.map((t) => (
         <div
           key={t.id}
-          className="animate-in slide-in-from-bottom-2 fade-in pointer-events-auto flex items-center gap-3 rounded-lg border border-border bg-popover px-4 py-2.5 text-sm text-popover-foreground shadow-lg"
+          className="animate-in slide-in-from-bottom-2 fade-in pointer-events-auto flex items-center gap-3 rounded-lg border border-brand/60 bg-popover px-4 py-2.5 text-sm text-popover-foreground shadow-lg"
         >
           <span>{t.message}</span>
           <button onClick={() => dismiss(t.id)} className="text-muted-foreground transition-colors hover:text-foreground">

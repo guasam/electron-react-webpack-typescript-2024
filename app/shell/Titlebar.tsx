@@ -1,6 +1,5 @@
 import { useEffect, type ReactNode } from 'react'
 import { Minus, Square, Copy, X, Sun, Moon } from 'lucide-react'
-import appIcon from '@/resources/build/icon.png'
 import { conveyor } from '@/conveyor/client'
 import { cn } from '@/lib/utils'
 import { useWindowStore } from './window-store'
@@ -33,12 +32,12 @@ export function Titlebar({ title = 'Electron React App' }: { title?: string }) {
   return (
     <header
       className={cn(
-        'relative flex h-10 shrink-0 items-center border-b border-border bg-background/95 select-none [-webkit-app-region:drag]',
+        'relative flex h-10 shrink-0 items-center border-b border-border bg-card select-none [-webkit-app-region:drag]',
         isMac && 'pl-16'
       )}
     >
-      <div className="flex items-center gap-1.5 pl-2.5 [-webkit-app-region:no-drag]">
-        <img src={appIcon} alt="" className="size-4" />
+      <div className="flex items-center gap-2.5 pl-3 [-webkit-app-region:no-drag]">
+        <span className="size-[13px] rounded-[4px] bg-brand ring-[3px] ring-brand/20" />
         {menuVisible && <TitlebarMenu />}
       </div>
 
