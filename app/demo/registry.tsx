@@ -3,7 +3,7 @@ import {
   Home,
   MessageSquare,
   FolderOpen,
-  Radio,
+  Gauge,
   Activity,
   StickyNote,
   ShieldCheck,
@@ -12,7 +12,7 @@ import {
 import { Overview } from './pages/Overview'
 import { StreamPage } from './pages/StreamPage'
 import { FilesPage } from './pages/FilesPage'
-import { EventsPage } from './pages/EventsPage'
+import { TasksPage } from './pages/TasksPage'
 import { SystemPage } from './pages/SystemPage'
 import { StorePage } from './pages/StorePage'
 import { SecurePage } from './pages/SecurePage'
@@ -49,12 +49,12 @@ export const PAGES: PageDef[] = [
     component: FilesPage,
   },
   {
-    id: 'events',
-    label: 'System events',
-    blurb: 'OS theme & power, live',
+    id: 'tasks',
+    label: 'Background task',
+    blurb: 'Live progress from main',
     group: 'primitives',
-    icon: Radio,
-    component: EventsPage,
+    icon: Gauge,
+    component: TasksPage,
   },
   {
     id: 'system',

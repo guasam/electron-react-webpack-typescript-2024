@@ -5,6 +5,7 @@ import { streamModule } from './modules/stream'
 import { secureModule } from './modules/secure'
 import { windowsModule } from './modules/windows'
 import { notifyModule } from './modules/notify'
+import { tasksModule } from './modules/tasks'
 import { sharedStore } from './stores/shared'
 
 /**
@@ -19,6 +20,7 @@ export const demoModules = {
   secure: secureModule,
   windows: windowsModule,
   notify: notifyModule,
+  tasks: tasksModule,
 }
 
 /** Register the demo cross-window stores on main. */

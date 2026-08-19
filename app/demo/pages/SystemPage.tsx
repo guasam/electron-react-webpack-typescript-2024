@@ -28,7 +28,7 @@ export function SystemPage() {
           </span>
         </div>
         <div className="h-2.5 overflow-hidden rounded-full bg-muted">
-          <div className="h-full bg-primary transition-all duration-500" style={{ width: `${usedPct}%` }} />
+          <div className="h-full bg-brand transition-all duration-500" style={{ width: `${usedPct}%` }} />
         </div>
         <div className="mt-2 truncate text-xs text-muted-foreground">{d?.cpuModel}</div>
       </Card>

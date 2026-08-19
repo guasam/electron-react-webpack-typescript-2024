@@ -1,4 +1,4 @@
-import { MessageSquare, Folder, Radio, Activity, Copy, Shield, ArrowRight, type LucideIcon } from 'lucide-react'
+import { MessageSquare, Folder, Gauge, Activity, Copy, Shield, ArrowRight, type LucideIcon } from 'lucide-react'
 import { type PageProps } from '../registry'
 
 interface Strip {
@@ -25,11 +25,11 @@ const STRIPS: Strip[] = [
     preview: FilePreview,
   },
   {
-    id: 'events',
-    title: 'System events',
-    desc: 'Broadcast to every window, pushed as it happens',
-    icon: Radio,
-    preview: EventsPreview,
+    id: 'tasks',
+    title: 'Background task',
+    desc: 'Long jobs report progress live from main',
+    icon: Gauge,
+    preview: TaskPreview,
   },
   {
     id: 'system',
@@ -156,11 +156,13 @@ function StreamPreview() {
 function FilePreview() {
   return <Pill>~/notes.md · 4.2 KB</Pill>
 }
-function EventsPreview() {
+function TaskPreview() {
   return (
-    <span className="flex items-center gap-1.5">
-      <Pill brand>theme:dark</Pill>
-      <Pill>ac</Pill>
+    <span className="flex items-center gap-2">
+      <span className="block h-1.5 w-16 overflow-hidden rounded-full bg-muted">
+        <span className="block h-full w-2/3 bg-brand" />
+      </span>
+      <span className="font-mono text-[10.5px] text-muted-foreground">63%</span>
     </span>
   )
 }

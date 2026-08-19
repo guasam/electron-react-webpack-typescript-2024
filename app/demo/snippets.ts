@@ -49,17 +49,21 @@ for await (const token of conveyor.stream.respond(prompt)) {
 const file = await conveyor.files.open()   // fully typed`,
     output: 'read ~/notes.md · 4.2 KB',
   },
-  events: {
-    file: 'conveyor/demo/modules/notify.ts',
-    code: `onNotify: event(z.string()),
+  tasks: {
+    file: 'conveyor/demo/modules/tasks.ts',
+    code: `onProgress: event(z.object({ percent: z.number(), label: z.string() })),
 
-broadcast: procedure().input(z.string()).handle(({ input }) => {
-  createEmitter(notifyModule, windows.broadcast).onNotify(input)
+run: procedure().handle(({ ctx }) => {
+  const emit = createEmitter(tasksModule, ctx.window)
+  const timer = setInterval(() => {
+    emit.onProgress({ percent, label })       // push to the renderer
+    if (percent >= 100) clearInterval(timer)
+  }, 90)
 })
 
-// renderer: every window subscribes once
-useConveyorEvent((c) => c.notify.onNotify, (msg) => toast(msg))`,
-    output: 'broadcast · every window notified',
+// renderer: subscribe; the bar fills as events arrive
+useConveyorEvent((c) => c.tasks.onProgress, setProgress)`,
+    output: 'task complete · 100%',
   },
   system: {
     file: 'conveyor/demo/modules/system.ts',
