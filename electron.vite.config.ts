@@ -49,8 +49,9 @@ export default defineConfig({
     },
     resolve: {
       alias: aliases,
-      // electron-conveyor is a file:-linked package with its own node_modules; dedupe forces
-      // these peers to a single copy (the app's) so React context/hooks don't break.
+      // Insurance for local framework work: when electron-conveyor is swapped to a file:/npm-link
+      // checkout it brings its own node_modules, and two React copies break context/hooks. Off the
+      // registry npm already hoists one copy, so this is a no-op there.
       dedupe: ['react', 'react-dom', '@tanstack/react-query', 'zustand'],
     },
     plugins: [tailwindcss(), react()],
