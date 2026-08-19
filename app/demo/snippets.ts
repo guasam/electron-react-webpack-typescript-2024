@@ -77,13 +77,16 @@ const info = useConveyorQuery(['system', 'info'],
   store: {
     file: 'conveyor/demo/stores/shared.ts',
     code: `export const sharedStore = defineStore('shared', {
-  state: { notes: [] as string[] },
-  actions: { add: (s, note: string) => { s.notes.push(note) } },
+  state: { count: 0, notes: [] as string[] },
+  actions: {
+    increment: (s) => { s.count += 1 },
+    add: (s, note: string) => { s.notes.push(note) },
+  },
 })
 
 // renderer: feels local, synced across every window
-const notes = useConveyorStore(sharedStore, (s) => s.notes)
-const { add } = useConveyorActions(sharedStore)`,
+const count = useConveyorStore(sharedStore, (s) => s.count)
+const { increment, add } = useConveyorActions(sharedStore)`,
     output: 'store synced across windows',
   },
   secure: {
