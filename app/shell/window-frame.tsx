@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, type ReactNode } from 'react'
 import { conveyor, useConveyorEvent } from '@/conveyor/client'
-import { Titlebar } from './Titlebar'
+import { Titlebar } from './titlebar'
 import { useWindowStore } from './window-store'
 import { useThemeStore } from './theme-store'
 

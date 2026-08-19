@@ -5,7 +5,7 @@ import { conveyor } from '@/conveyor/client'
 import { Button } from '../components/button'
 import { Input } from '@/app/components/ui/input'
 import { Card } from '@/app/components/ui/card'
-import { PageShell } from '../components/PageShell'
+import { PageShell } from '../components/page-shell'
 
 export function SecurePage() {
   const [pin, setPin] = useState('')

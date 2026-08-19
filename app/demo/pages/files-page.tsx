@@ -3,7 +3,7 @@ import { FolderOpen, FileWarning } from 'lucide-react'
 import { conveyor } from '@/conveyor/client'
 import { Button } from '../components/button'
 import { Card } from '@/app/components/ui/card'
-import { PageShell } from '../components/PageShell'
+import { PageShell } from '../components/page-shell'
 import { formatBytes } from '../components/format'
 
 type FileResult = Awaited<ReturnType<typeof conveyor.files.open>>

@@ -9,13 +9,13 @@ import {
   ShieldCheck,
   type LucideIcon,
 } from 'lucide-react'
-import { Overview } from './pages/Overview'
-import { StreamPage } from './pages/StreamPage'
-import { FilesPage } from './pages/FilesPage'
-import { TasksPage } from './pages/TasksPage'
-import { SystemPage } from './pages/SystemPage'
-import { StorePage } from './pages/StorePage'
-import { SecurePage } from './pages/SecurePage'
+import { Overview } from './pages/overview'
+import { StreamPage } from './pages/stream-page'
+import { FilesPage } from './pages/files-page'
+import { TasksPage } from './pages/tasks-page'
+import { SystemPage } from './pages/system-page'
+import { StorePage } from './pages/store-page'
+import { SecurePage } from './pages/secure-page'
 
 export interface PageProps {
   onNavigate: (id: string) => void

@@ -1,6 +1,6 @@
 import { useConveyorQuery } from '@/conveyor/client'
 import { Card } from '@/app/components/ui/card'
-import { PageShell } from '../components/PageShell'
+import { PageShell } from '../components/page-shell'
 import { formatBytes } from '../components/format'
 
 export function SystemPage() {

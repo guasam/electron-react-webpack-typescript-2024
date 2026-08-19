@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Code2 } from 'lucide-react'
 import { useConveyorEvent } from '@/conveyor/client'
 import { PAGES } from './registry'
-import { Sidebar } from './Sidebar'
-import { CodeDrawer } from './CodeDrawer'
+import { Sidebar } from './sidebar'
+import { CodeDrawer } from './code-drawer'
 import { Toaster, useToasts } from './components/toast'
 
 /**

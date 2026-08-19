@@ -1,1 +1,1 @@
-export { Playground } from './Playground'
+export { Playground } from './playground'

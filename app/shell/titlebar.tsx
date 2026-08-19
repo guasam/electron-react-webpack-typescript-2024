@@ -4,7 +4,7 @@ import { conveyor } from '@/conveyor/client'
 import { cn } from '@/lib/utils'
 import { useWindowStore } from './window-store'
 import { useThemeStore } from './theme-store'
-import { TitlebarMenu } from './TitlebarMenu'
+import { TitlebarMenu } from './titlebar-menu'
 
 /**
  * Custom window titlebar: core shell chrome, styled with Tailwind on the theme tokens (no legacy

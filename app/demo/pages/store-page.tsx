@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '../components/button'
 import { Input } from '@/app/components/ui/input'
 import { Card } from '@/app/components/ui/card'
-import { PageShell } from '../components/PageShell'
+import { PageShell } from '../components/page-shell'
 
 export function StorePage() {
   const count = useConveyorStore(sharedStore, (s) => s.count)
