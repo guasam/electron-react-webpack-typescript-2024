@@ -1,6 +1,14 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
-  "include": ["lib/main/index.d.ts", "electron.vite.config.*", "lib/**/*", "conveyor/**/*", "resources/**/*", "app/**/*"],
+  "include": [
+    "lib/main/index.d.ts",
+    "electron.vite.config.*",
+    "eslint.config.ts",
+    "lib/**/*",
+    "conveyor/**/*",
+    "resources/**/*",
+    "app/**/*"
+  ],
   "compilerOptions": {
     "composite": true,
     "moduleResolution": "bundler",
