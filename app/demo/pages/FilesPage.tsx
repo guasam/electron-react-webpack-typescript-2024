@@ -4,23 +4,9 @@ import { conveyor } from '@/conveyor/client'
 import { Button } from '@/app/components/ui/button'
 import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/PageShell'
-import { CodeBlock } from '../components/CodeBlock'
 import { formatBytes } from '../components/format'
 
 type FileResult = Awaited<ReturnType<typeof conveyor.files.open>>
-
-const CODE = `open: procedure()
-  .handle(async ({ ctx }) => {
-    const { canceled, filePaths } = await dialog.showOpenDialog(ctx.window, {
-      properties: ['openFile'],
-      filters: [{ name: 'Text files', extensions: ['txt', 'md', 'json', 'ts'] }],
-    })
-    if (canceled) return null
-    return { name: basename(filePaths[0]), content: await readFile(filePaths[0], 'utf-8') }
-  })
-
-// renderer: fully typed, no channel strings
-const file = await conveyor.files.open()`
 
 export function FilesPage() {
   const [file, setFile] = useState<FileResult>(null)
@@ -65,7 +51,6 @@ export function FilesPage() {
           </div>
         )}
       </Card>
-      <CodeBlock code={CODE} caption="conveyor/demo/modules/files.ts" />
     </PageShell>
   )
 }

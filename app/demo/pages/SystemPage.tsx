@@ -1,22 +1,7 @@
 import { useConveyorQuery } from '@/conveyor/client'
 import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/PageShell'
-import { CodeBlock } from '../components/CodeBlock'
 import { formatBytes } from '../components/format'
-
-const CODE = `info: procedure()
-  .handle(() => ({
-    platform: process.platform,
-    cpuCount: os.cpus().length,
-    totalMem: os.totalmem(),
-    freeMem: os.freemem(),
-    loadAvg: os.loadavg(),
-  }))
-
-// renderer: cached + auto-refreshing via TanStack Query
-const info = useConveyorQuery(['system', 'info'], (c) => c.system.info(), {
-  refetchInterval: 1500,
-})`
 
 export function SystemPage() {
   const info = useConveyorQuery(['system', 'info'], (c) => c.system.info(), { refetchInterval: 1500 })
@@ -47,7 +32,6 @@ export function SystemPage() {
         </div>
         <div className="mt-2 truncate text-xs text-muted-foreground">{d?.cpuModel}</div>
       </Card>
-      <CodeBlock code={CODE} caption="conveyor/demo/modules/system.ts" />
     </PageShell>
   )
 }

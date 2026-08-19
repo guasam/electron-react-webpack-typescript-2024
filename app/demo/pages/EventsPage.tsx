@@ -5,16 +5,6 @@ import { Button } from '@/app/components/ui/button'
 import { Input } from '@/app/components/ui/input'
 import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/PageShell'
-import { CodeBlock } from '../components/CodeBlock'
-
-const CODE = `// main - a typed event, fanned out to windows via the window manager
-onNotify: event(z.string()),
-broadcast: procedure().input(z.string()).handle(({ input }) => {
-  createEmitter(notifyModule, windows.broadcast).onNotify(input)
-}),
-
-// renderer - subscribe once; every window shows the message
-useConveyorEvent((c) => c.notify.onNotify, (msg) => toast(msg))`
 
 export function EventsPage() {
   const [message, setMessage] = useState('Hello from another window')
@@ -50,7 +40,6 @@ export function EventsPage() {
           </span>
         </div>
       </Card>
-      <CodeBlock code={CODE} caption="conveyor/demo/modules/notify.ts" />
     </PageShell>
   )
 }

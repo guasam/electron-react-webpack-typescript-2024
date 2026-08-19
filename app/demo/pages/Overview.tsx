@@ -1,43 +1,199 @@
-import { ArrowRight } from 'lucide-react'
-import { Card } from '@/app/components/ui/card'
-import { PageShell } from '../components/PageShell'
-import { PAGES, type PageProps } from '../registry'
+import { MessageSquare, Folder, Radio, Activity, Copy, Shield, ArrowRight, type LucideIcon } from 'lucide-react'
+import { type PageProps } from '../registry'
+
+interface Strip {
+  id: string
+  title: string
+  desc: string
+  icon: LucideIcon
+  preview: () => React.ReactNode
+}
+
+const STRIPS: Strip[] = [
+  {
+    id: 'stream',
+    title: 'Streaming',
+    desc: 'Token-by-token, LLM-style, backpressure aware',
+    icon: MessageSquare,
+    preview: StreamPreview,
+  },
+  {
+    id: 'files',
+    title: 'File access',
+    desc: 'Native dialog and read, scoped to the main process',
+    icon: Folder,
+    preview: FilePreview,
+  },
+  {
+    id: 'events',
+    title: 'System events',
+    desc: 'Broadcast to every window, pushed as it happens',
+    icon: Radio,
+    preview: EventsPreview,
+  },
+  {
+    id: 'system',
+    title: 'System monitor',
+    desc: 'CPU and memory, polled on an interval you own',
+    icon: Activity,
+    preview: MonitorPreview,
+  },
+  {
+    id: 'store',
+    title: 'Shared state',
+    desc: 'One store, synced across every window',
+    icon: Copy,
+    preview: StorePreview,
+  },
+  {
+    id: 'secure',
+    title: 'Middleware',
+    desc: 'Guards and context, composed per channel',
+    icon: Shield,
+    preview: MiddlewarePreview,
+  },
+]
 
 export function Overview({ onNavigate }: PageProps) {
-  const primitives = PAGES.filter((p) => p.group === 'primitives')
-
   return (
-    <PageShell
-      badge="electron-conveyor"
-      title="Conveyor playground"
-      description="Type-safe IPC and cross-window state for Electron, with one source of truth per feature and end-to-end inference. Each page below is a real capability, live, with the code that drives it."
-    >
-      <div className="grid grid-cols-2 gap-3">
-        {primitives.map((p) => {
-          const Icon = p.icon
+    <div className="px-10 pt-[34px] pb-10">
+      {/* eyebrow */}
+      <div className="mb-[26px] flex items-center gap-3">
+        <span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground">CONVEYOR / OVERVIEW</span>
+        <div className="h-px flex-1 bg-border" />
+        <span className="rounded-[5px] border border-brand px-2 py-1 font-mono text-[10px] font-medium text-brand">
+          electron-conveyor
+        </span>
+      </div>
+
+      {/* hero */}
+      <h1 className="max-w-[15ch] text-[52px] leading-[1.02] font-semibold tracking-[-0.035em]">
+        Type-safe IPC,
+        <br />
+        one source of{' '}
+        <span className="relative inline-block">
+          <span className="absolute right-[-2px] bottom-[4px] left-[-2px] h-[11px] bg-brand opacity-90" />
+          <span className="relative">truth.</span>
+        </span>
+      </h1>
+      <p className="mt-5 max-w-[58ch] text-[15.5px] leading-[1.6] text-pretty text-muted-foreground">
+        Cross-window state for Electron with end-to-end inference. Every page below is a real capability, running live,
+        next to the code that drives it.
+      </p>
+
+      {/* capability strips */}
+      <div className="mt-9 flex flex-col gap-[9px]">
+        {STRIPS.map((s, i) => {
+          const Icon = s.icon
+          const Preview = s.preview
           return (
-            <Card
-              key={p.id}
-              onClick={() => onNavigate(p.id)}
-              className="group cursor-pointer flex-row items-center gap-3 p-4 transition-colors hover:bg-accent/50"
+            <button
+              key={s.id}
+              onClick={() => onNavigate(s.id)}
+              className="group flex items-center gap-4 rounded-xl border border-border bg-card px-[18px] py-4 text-left transition-[border-color,transform] duration-150 hover:translate-x-[3px] hover:border-brand"
             >
-              <div className="flex size-9 items-center justify-center rounded-lg bg-muted text-foreground/70">
+              <span className="w-4 flex-none font-mono text-[10px] text-muted-foreground/60">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="flex size-[34px] flex-none items-center justify-center rounded-[9px] border border-border bg-muted text-brand">
                 <Icon className="size-4" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="text-sm font-medium">{p.label}</div>
-                <div className="truncate text-xs text-muted-foreground">{p.blurb}</div>
-              </div>
-              <ArrowRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-            </Card>
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[14.5px] font-semibold tracking-[-0.01em]">{s.title}</span>
+                <span className="mt-[3px] block text-[12.5px] leading-[1.4] text-muted-foreground">{s.desc}</span>
+              </span>
+              <span className="flex-none">
+                <Preview />
+              </span>
+              <ArrowRight className="size-3.5 flex-none text-muted-foreground/60 transition-transform group-hover:translate-x-0.5" />
+            </button>
           )
         })}
       </div>
-      <p className="text-xs text-muted-foreground">
-        This whole playground is strippable: delete <code className="text-foreground/70">app/demo</code> and{' '}
-        <code className="text-foreground/70">conveyor/demo</code>, remove a few marked lines, and you have a clean
-        themed shell to build on.
-      </p>
-    </PageShell>
+
+      {/* strip footer */}
+      <div className="mt-7 flex items-start gap-3.5 rounded-xl border border-dashed border-border-bright p-[18px]">
+        <span className="mt-0.5 font-mono text-[10px] text-brand">STRIP</span>
+        <p className="text-[12.5px] leading-[1.6] text-muted-foreground">
+          This whole playground is removable. Delete <Code>app/demo</Code> and <Code>conveyor/demo</Code>, drop a few
+          marked lines, and you have a clean themed shell to build on.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function Code({ children }: { children: React.ReactNode }) {
+  return (
+    <code className="rounded-[4px] bg-muted px-[5px] py-0.5 font-mono text-[11.5px] text-foreground/80">
+      {children}
+    </code>
+  )
+}
+
+const Pill = ({ children, brand }: { children: React.ReactNode; brand?: boolean }) => (
+  <span
+    className={
+      brand
+        ? 'rounded-[5px] bg-brand-soft px-2 py-[3px] font-mono text-[10.5px] text-brand'
+        : 'rounded-[5px] border border-border bg-muted px-2 py-[3px] font-mono text-[10.5px] text-muted-foreground'
+    }
+  >
+    {children}
+  </span>
+)
+
+function StreamPreview() {
+  return (
+    <span className="flex items-center gap-1.5 font-mono text-[10.5px] text-muted-foreground">
+      <span className="opacity-40">the</span>
+      <span className="opacity-70">quick</span>
+      <span>brown</span>
+      <span className="inline-block h-3 w-[5px] animate-pulse bg-brand" />
+    </span>
+  )
+}
+function FilePreview() {
+  return <Pill>~/notes.md · 4.2 KB</Pill>
+}
+function EventsPreview() {
+  return (
+    <span className="flex items-center gap-1.5">
+      <Pill brand>theme:dark</Pill>
+      <Pill>ac</Pill>
+    </span>
+  )
+}
+function MonitorPreview() {
+  return (
+    <span className="flex items-center gap-2">
+      <svg width="92" height="26" viewBox="0 0 92 26" fill="none" className="text-brand">
+        <polyline
+          points="0,20 12,14 24,17 36,8 48,12 60,5 72,15 84,10 92,13"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          fill="none"
+        />
+      </svg>
+      <span className="font-mono text-[10.5px] font-medium text-muted-foreground">31%</span>
+    </span>
+  )
+}
+function StorePreview() {
+  return (
+    <span className="flex items-center gap-1.5">
+      <Pill>win 1</Pill>
+      <span className="font-mono text-brand">⇄</span>
+      <Pill>win 2</Pill>
+    </span>
+  )
+}
+function MiddlewarePreview() {
+  return (
+    <span className="flex items-center gap-1.5">
+      <Pill>auth</Pill>
+      <Pill>log</Pill>
+      <Pill brand>rate</Pill>
+    </span>
   )
 }

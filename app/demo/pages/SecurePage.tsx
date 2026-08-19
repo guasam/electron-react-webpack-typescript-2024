@@ -6,19 +6,6 @@ import { Button } from '@/app/components/ui/button'
 import { Input } from '@/app/components/ui/input'
 import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/PageShell'
-import { CodeBlock } from '../components/CodeBlock'
-
-const CODE = `const requireUnlocked = middleware(({ next }) => {
-  if (!unlocked) throw new Error('Locked: unlock first')
-  return next()
-})
-
-readSecret: procedure()
-  .use(timed)              // wrap: log duration
-  .use(requireUnlocked)    // guard: block unless unlocked
-  .handle(({ ctx }) => ({  // ctx carries the app context
-    secret: '…', uptimeMs: Date.now() - ctx.appStartedAt,
-  }))`
 
 export function SecurePage() {
   const [pin, setPin] = useState('')
@@ -99,7 +86,6 @@ export function SecurePage() {
           {error && <span className="text-sm text-destructive">{error}</span>}
         </div>
       </Card>
-      <CodeBlock code={CODE} caption="conveyor/demo/modules/secure.ts" />
     </PageShell>
   )
 }

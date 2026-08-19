@@ -6,10 +6,12 @@ import { setupEvents } from '@/conveyor/router'
 export function createAppWindow(): BrowserWindow {
   // Create the main window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1240,
+    height: 780,
+    minWidth: 720,
+    minHeight: 520,
     show: false,
-    backgroundColor: '#1c1c1c',
+    backgroundColor: '#0e1011',
     icon: appIcon,
     frame: false,
     titleBarStyle: 'hiddenInset',

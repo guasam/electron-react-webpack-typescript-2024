@@ -7,17 +7,6 @@ import { Button } from '@/app/components/ui/button'
 import { Input } from '@/app/components/ui/input'
 import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/PageShell'
-import { CodeBlock } from '../components/CodeBlock'
-
-const CODE = `// pure definition, shared by main (source of truth) and every renderer
-export const sharedStore = defineStore('shared', {
-  state: { notes: [] as string[] },
-  actions: { add: (s, note: string) => { s.notes.push(note) } },
-})
-
-// renderer - feels local, stays in sync across all windows
-const notes = useConveyorStore(sharedStore, (s) => s.notes)
-const { add, remove } = useConveyorActions(sharedStore)`
 
 export function StorePage() {
   const notes = useConveyorStore(sharedStore, (s) => s.notes)
@@ -81,7 +70,6 @@ export function StorePage() {
           </button>
         )}
       </Card>
-      <CodeBlock code={CODE} caption="conveyor/demo/stores/shared.ts" />
     </PageShell>
   )
 }

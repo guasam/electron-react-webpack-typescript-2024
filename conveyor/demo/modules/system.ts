@@ -1,3 +1,4 @@
+import { app } from 'electron'
 import os from 'node:os'
 import { z } from 'zod'
 import { defineModule, procedure } from '../../init'
@@ -7,6 +8,7 @@ export const systemModule = defineModule('system', {
   info: procedure()
     .output(
       z.object({
+        version: z.string(),
         platform: z.string(),
         arch: z.string(),
         release: z.string(),
@@ -21,6 +23,7 @@ export const systemModule = defineModule('system', {
     .handle(() => {
       const cpus = os.cpus()
       return {
+        version: app.getVersion(),
         platform: process.platform,
         arch: process.arch,
         release: os.release(),
