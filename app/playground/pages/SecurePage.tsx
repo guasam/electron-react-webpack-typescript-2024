@@ -9,7 +9,7 @@ import { PageShell } from '../components/PageShell'
 import { CodeBlock } from '../components/CodeBlock'
 
 const CODE = `const requireUnlocked = middleware(({ next }) => {
-  if (!unlocked) throw new Error('Locked — unlock first')
+  if (!unlocked) throw new Error('Locked: unlock first')
   return next()
 })
 

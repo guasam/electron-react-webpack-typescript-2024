@@ -4,7 +4,7 @@ import { createWindowManager } from 'electron-conveyor/main'
 import { createAppWindow } from './app'
 import { registerResourcesProtocol } from './protocols'
 import { registerStores } from '@/conveyor/stores'
-import { setDemoWindowFactory } from '@/conveyor/demo/window-factory'
+import { setDemoHost } from '@/conveyor/demo/host'
 
 /** Tracks every window by label; the substrate for cross-window targeting. */
 export const windows = createWindowManager()
@@ -20,11 +20,14 @@ app.whenReady().then(() => {
   registerResourcesProtocol()
   registerStores()
 
-  // Let the playground spawn extra windows (Store page → cross-window sync). Remove to strip.
+  // Give the playground the window manager (broadcast fan-out) + a window opener. Remove to strip.
   let windowCount = 1
-  setDemoWindowFactory(() => {
-    windowCount += 1
-    windows.register(`window-${windowCount}`, createAppWindow())
+  setDemoHost({
+    windows,
+    openWindow: () => {
+      windowCount += 1
+      windows.register(`window-${windowCount}`, createAppWindow())
+    },
   })
 
   // Open the main window. (Core apps ship a single window.)

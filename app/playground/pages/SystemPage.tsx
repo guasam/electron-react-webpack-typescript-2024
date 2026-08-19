@@ -13,7 +13,7 @@ const CODE = `info: procedure()
     loadAvg: os.loadavg(),
   }))
 
-// renderer — cached + auto-refreshing via TanStack Query
+// renderer: cached + auto-refreshing via TanStack Query
 const info = useConveyorQuery(['system', 'info'], (c) => c.system.info(), {
   refetchInterval: 1500,
 })`

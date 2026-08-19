@@ -1,9 +1,9 @@
 import { defineModule, procedure } from '../../init'
-import { openDemoWindow } from '../window-factory'
+import { demoHost } from '../host'
 
-/** Opens another app window — the shared-store demo uses it to show cross-window sync. */
+/** Opens another app window - the shared-state and broadcast demos use it to show cross-window work. */
 export const windowsModule = defineModule('windows', {
   open: procedure().handle(() => {
-    openDemoWindow()
+    demoHost().openWindow()
   }),
 })

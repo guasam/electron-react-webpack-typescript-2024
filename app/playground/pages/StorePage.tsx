@@ -9,13 +9,13 @@ import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/PageShell'
 import { CodeBlock } from '../components/CodeBlock'
 
-const CODE = `// pure definition — shared by main (source of truth) and every renderer
+const CODE = `// pure definition, shared by main (source of truth) and every renderer
 export const sharedStore = defineStore('shared', {
   state: { notes: [] as string[] },
   actions: { add: (s, note: string) => { s.notes.push(note) } },
 })
 
-// renderer — feels local, stays in sync across all windows
+// renderer - feels local, stays in sync across all windows
 const notes = useConveyorStore(sharedStore, (s) => s.notes)
 const { add, remove } = useConveyorActions(sharedStore)`
 
@@ -25,7 +25,11 @@ export function StorePage() {
   const [text, setText] = useState('')
 
   const submit = () => {
-    add(text)
+    const note = text.trim()
+    if (!note) return
+    add(note)
+    // Nudge the other windows so they notice even on a different page.
+    conveyor.notify.toOthers(`New note added: "${note}"`)
     setText('')
   }
 
@@ -41,7 +45,7 @@ export function StorePage() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && submit()}
-            placeholder="Add a note…"
+            placeholder="Add a note..."
           />
           <Button onClick={submit}>
             <Plus className="size-4" /> Add
@@ -54,7 +58,7 @@ export function StorePage() {
         <ul className="mt-4 space-y-1.5">
           {notes.length === 0 ? (
             <li className="rounded-lg bg-muted/40 p-3 text-sm text-muted-foreground">
-              No notes yet — add one, then open a second window.
+              No notes yet. Add one, then open a second window.
             </li>
           ) : (
             notes.map((note, i) => (

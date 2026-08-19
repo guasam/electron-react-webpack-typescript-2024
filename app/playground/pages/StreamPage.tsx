@@ -7,7 +7,7 @@ import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/PageShell'
 import { CodeBlock } from '../components/CodeBlock'
 
-const CODE = `// main — an async-generator handler; each yield streams to the renderer
+const CODE = `// main: an async-generator handler; each yield streams to the renderer
 respond: procedure()
   .input(z.string())
   .stream(async function* ({ input, signal }) {
@@ -18,7 +18,7 @@ respond: procedure()
     }
   })
 
-// renderer — consume it like any async iterable
+// renderer: consume it like any async iterable
 for await (const token of conveyor.stream.respond(prompt)) {
   setOutput((o) => o + token)
 }`
@@ -51,7 +51,7 @@ export function StreamPage() {
     <PageShell
       badge="Streaming · .stream()"
       title="Streaming responses"
-      description="An async-generator handler pushes tokens to the renderer as they’re produced — the exact pattern an LLM app needs — over one typed channel, with built-in cancellation."
+      description="An async-generator handler pushes tokens to the renderer as they are produced (the exact pattern an LLM app needs), over one typed channel, with built-in cancellation."
     >
       <Card className="gap-0 p-4">
         <div className="flex gap-2">

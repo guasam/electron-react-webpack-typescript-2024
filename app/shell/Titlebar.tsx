@@ -6,7 +6,7 @@ import { useWindowStore } from './window-store'
 import { useThemeStore } from './theme-store'
 
 /**
- * Custom window titlebar — core shell chrome, styled with Tailwind on the theme tokens (no legacy
+ * Custom window titlebar: core shell chrome, styled with Tailwind on the theme tokens (no legacy
  * window.css). A conveyor consumer itself: the controls call the `window` module. macOS keeps its
  * native inset traffic lights; win32/linux render these controls.
  */

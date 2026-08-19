@@ -10,7 +10,7 @@ export function Overview({ onNavigate }: PageProps) {
     <PageShell
       badge="electron-conveyor"
       title="Conveyor playground"
-      description="Type-safe IPC and cross-window state for Electron — one source of truth per feature, end-to-end inference. Each page below is a real capability, live, with the code that drives it."
+      description="Type-safe IPC and cross-window state for Electron, with one source of truth per feature and end-to-end inference. Each page below is a real capability, live, with the code that drives it."
     >
       <div className="grid grid-cols-2 gap-3">
         {primitives.map((p) => {
@@ -34,7 +34,7 @@ export function Overview({ onNavigate }: PageProps) {
         })}
       </div>
       <p className="text-xs text-muted-foreground">
-        This whole playground is strippable — delete <code className="text-foreground/70">app/playground</code> and{' '}
+        This whole playground is strippable: delete <code className="text-foreground/70">app/playground</code> and{' '}
         <code className="text-foreground/70">conveyor/demo</code>, remove a few marked lines, and you have a clean
         themed shell to build on.
       </p>

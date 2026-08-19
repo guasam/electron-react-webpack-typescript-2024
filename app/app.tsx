@@ -3,7 +3,7 @@ import { Playground } from './playground'
 import './styles/app.css'
 
 /**
- * App root — the core shell with the playground mounted inside. To strip the playground: remove the
+ * App root: the core shell with the playground mounted inside. To strip the playground, remove the
  * <Playground /> line below and delete app/playground + conveyor/demo (see README).
  */
 export default function App() {

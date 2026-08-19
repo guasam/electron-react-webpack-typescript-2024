@@ -1,7 +1,7 @@
 import type { BrowserWindow } from 'electron'
 import { createRouter } from 'electron-conveyor/main'
 import { windowModule, setupWindowEvents } from './modules/window'
-import { demoModules, setupDemoEvents } from './demo'
+import { demoModules } from './demo'
 
 /**
  * The app's IPC surface. Runtime is MAIN-ONLY; the renderer imports only `type AppRouter`.
@@ -26,5 +26,4 @@ export type AppRouter = typeof router
 /** Wire per-window push events. Call once per created window. */
 export function setupEvents(win: BrowserWindow): void {
   setupWindowEvents(win)
-  setupDemoEvents(win) // playground — remove to strip
 }

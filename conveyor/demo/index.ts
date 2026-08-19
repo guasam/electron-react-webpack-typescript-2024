@@ -1,16 +1,16 @@
-import type { BrowserWindow } from 'electron'
 import { registerStore } from 'electron-conveyor/main'
 import { filesModule } from './modules/files'
-import { systemModule, setupSystemEvents } from './modules/system'
+import { systemModule } from './modules/system'
 import { streamModule } from './modules/stream'
 import { secureModule } from './modules/secure'
 import { windowsModule } from './modules/windows'
+import { notifyModule } from './modules/notify'
 import { sharedStore } from './stores/shared'
 
 /**
  * The playground's demo IPC surface. To strip the playground: delete this `conveyor/demo/` folder
- * and remove the `...demoModules` spread in `router.ts`, `registerDemoStores()` in
- * `stores/index.ts`, and `setupDemoEvents()` in `router.ts`.
+ * and remove the `...demoModules` spread in `router.ts` plus `registerDemoStores()` in
+ * `stores/index.ts` and `setDemoHost(...)` in `lib/main/main.ts`.
  */
 export const demoModules = {
   files: filesModule,
@@ -18,14 +18,10 @@ export const demoModules = {
   stream: streamModule,
   secure: secureModule,
   windows: windowsModule,
+  notify: notifyModule,
 }
 
 /** Register the demo cross-window stores on main. */
 export function registerDemoStores() {
   return { shared: registerStore(sharedStore) }
-}
-
-/** Wire the demo's per-window push events (OS appearance + power). Call once per window. */
-export function setupDemoEvents(win: BrowserWindow): void {
-  setupSystemEvents(win)
 }

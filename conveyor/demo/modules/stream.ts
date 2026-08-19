@@ -3,9 +3,9 @@ import { defineModule, procedure } from '../../init'
 
 // A canned "assistant" reply, streamed token-by-token to mimic an LLM response.
 const REPLY =
-  'Conveyor streams this back to you one token at a time over a single typed channel — the exact ' +
-  'pattern an LLM app needs. The handler is an async generator; each `yield` is pushed to the ' +
-  'renderer as it happens, and stopping the stream aborts it through the handler`s signal.'
+  'Conveyor streams this back to you one token at a time over a single typed channel, the exact ' +
+  'pattern an LLM app needs. The handler is an async generator; each yield is pushed to the ' +
+  'renderer as it happens, and stopping the stream aborts it through the signal.'
 
 /**
  * Streaming demo — a typewriter/LLM-style token stream. `.stream()` yields words with a small delay;

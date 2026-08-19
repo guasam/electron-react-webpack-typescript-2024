@@ -1,80 +1,56 @@
 import { useState } from 'react'
-import { Moon, Sun, Plug, BatteryCharging } from 'lucide-react'
-import { useConveyorEvent } from '@/conveyor/client'
+import { Megaphone, PanelLeftOpen } from 'lucide-react'
+import { conveyor } from '@/conveyor/client'
+import { Button } from '@/app/components/ui/button'
+import { Input } from '@/app/components/ui/input'
 import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/PageShell'
 import { CodeBlock } from '../components/CodeBlock'
 
-const CODE = `// main — declare the channel, then push when the OS changes
-onThemeChange: event(z.enum(['light', 'dark'])),
-nativeTheme.on('updated', () =>
-  emit.onThemeChange(nativeTheme.shouldUseDarkColors ? 'dark' : 'light'))
+const CODE = `// main - a typed event, fanned out to windows via the window manager
+onNotify: event(z.string()),
+broadcast: procedure().input(z.string()).handle(({ input }) => {
+  createEmitter(notifyModule, windows.broadcast).onNotify(input)
+}),
 
-// renderer — subscribe for the component's lifetime
-useConveyorEvent((c) => c.system.onThemeChange, (theme) => setOsTheme(theme))`
+// renderer - subscribe once; every window shows the message
+useConveyorEvent((c) => c.notify.onNotify, (msg) => toast(msg))`
 
 export function EventsPage() {
-  const [osTheme, setOsTheme] = useState<'light' | 'dark' | null>(null)
-  const [power, setPower] = useState<'ac' | 'battery' | null>(null)
-  const [log, setLog] = useState<string[]>([])
-  const push = (msg: string) => setLog((l) => [msg, ...l].slice(0, 8))
+  const [message, setMessage] = useState('Hello from another window')
 
-  useConveyorEvent(
-    (c) => c.system.onThemeChange,
-    (t) => {
-      setOsTheme(t)
-      push(`OS appearance → ${t}`)
-    }
-  )
-  useConveyorEvent(
-    (c) => c.system.onPowerChange,
-    (p) => {
-      setPower(p)
-      push(`power → ${p === 'ac' ? 'plugged in' : 'on battery'}`)
-    }
-  )
+  const send = () => {
+    if (message.trim()) conveyor.notify.broadcast(message.trim())
+  }
 
   return (
     <PageShell
       badge="Events · event()"
-      title="Live system events"
-      description="main→renderer push over typed channels. Change your OS appearance (light/dark) or plug/unplug power, and the app reacts in real time — no polling."
+      title="Broadcast across windows"
+      description="Main pushes typed events to the renderer. Send a broadcast and every open window shows a toast, whatever page it's on. Open a second window to watch the fan-out."
     >
-      <div className="grid grid-cols-2 gap-4">
-        <Signal
-          label="OS appearance"
-          value={osTheme ?? 'waiting…'}
-          icon={osTheme === 'dark' ? <Moon className="size-5" /> : <Sun className="size-5" />}
-        />
-        <Signal
-          label="Power source"
-          value={power ? (power === 'ac' ? 'plugged in' : 'on battery') : 'waiting…'}
-          icon={power === 'battery' ? <BatteryCharging className="size-5" /> : <Plug className="size-5" />}
-        />
-      </div>
       <Card className="gap-0 p-4">
-        <div className="mb-2 text-xs font-medium text-muted-foreground">Event log</div>
-        <ul className="space-y-1 font-mono text-xs text-foreground/80">
-          {log.length === 0 ? (
-            <li className="text-muted-foreground">Toggle your OS theme to see an event arrive…</li>
-          ) : (
-            log.map((line, i) => <li key={i}>{line}</li>)
-          )}
-        </ul>
+        <div className="flex gap-2">
+          <Input
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && send()}
+            placeholder="Type a message to broadcast..."
+          />
+          <Button onClick={send}>
+            <Megaphone className="size-4" /> Send to all windows
+          </Button>
+        </div>
+        <div className="mt-3 flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => conveyor.windows.open()}>
+            <PanelLeftOpen className="size-4" /> Open 2nd window
+          </Button>
+          <span className="text-xs text-muted-foreground">
+            then broadcast from either one; a toast appears in both.
+          </span>
+        </div>
       </Card>
-      <CodeBlock code={CODE} caption="conveyor/demo/modules/system.ts" />
+      <CodeBlock code={CODE} caption="conveyor/demo/modules/notify.ts" />
     </PageShell>
-  )
-}
-
-function Signal({ label, value, icon }: { label: string; value: string; icon: React.ReactNode }) {
-  return (
-    <Card className="flex-row items-center gap-3 p-4">
-      <div className="flex size-10 items-center justify-center rounded-lg bg-muted text-foreground/70">{icon}</div>
-      <div>
-        <div className="text-xs text-muted-foreground">{label}</div>
-        <div className="text-sm font-medium capitalize">{value}</div>
-      </div>
-    </Card>
   )
 }

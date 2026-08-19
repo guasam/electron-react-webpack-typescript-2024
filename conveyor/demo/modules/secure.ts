@@ -16,7 +16,7 @@ const timed = middleware(async ({ path, next }) => {
 
 /** Guard — blocks the handler unless the demo is unlocked. */
 const requireUnlocked = middleware(({ next }) => {
-  if (!unlocked) throw new Error('Locked — unlock with PIN 1234 first')
+  if (!unlocked) throw new Error('Locked: unlock with PIN 1234 first')
   return next()
 })
 
