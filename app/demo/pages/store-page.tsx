@@ -15,7 +15,8 @@ export function StorePage() {
   const { increment, decrement, add, remove, clear } = useConveyorActions(sharedStore)
   const [text, setText] = useState('')
 
-  const windowCount = useConveyorQuery(['windows', 'count'], (c) => c.windows.count(), { refetchInterval: 800 }).data ?? 1
+  const windowCount =
+    useConveyorQuery(['windows', 'count'], (c) => c.windows.count(), { refetchInterval: 800 }).data ?? 1
   const ready = windowCount > 1
 
   const submit = () => {
@@ -46,7 +47,12 @@ export function StorePage() {
         )}
       </div>
 
-      <div className={cn('space-y-5 transition-opacity duration-300', !ready && 'pointer-events-none opacity-40 select-none')}>
+      <div
+        className={cn(
+          'space-y-5 transition-opacity duration-300',
+          !ready && 'pointer-events-none opacity-40 select-none'
+        )}
+      >
         {/* shared counter */}
         <Card className="flex-row items-center justify-between gap-4 p-4">
           <div>

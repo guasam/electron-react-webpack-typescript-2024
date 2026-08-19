@@ -5,7 +5,23 @@ import { z } from 'zod'
 import { defineModule, procedure } from '../../init'
 
 const MAX_PREVIEW = 100_000
-const TEXT_EXTS = ['txt', 'md', 'json', 'ts', 'tsx', 'js', 'jsx', 'css', 'html', 'yml', 'yaml', 'log', 'csv', 'xml', 'sh']
+const TEXT_EXTS = [
+  'txt',
+  'md',
+  'json',
+  'ts',
+  'tsx',
+  'js',
+  'jsx',
+  'css',
+  'html',
+  'yml',
+  'yaml',
+  'log',
+  'csv',
+  'xml',
+  'sh',
+]
 
 /** Native file access - opens the OS file picker and reads the chosen file as text. */
 export const filesModule = defineModule('files', {

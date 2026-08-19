@@ -53,9 +53,7 @@ export function TasksPage() {
 
         {p ? (
           <div className="mt-3 space-y-1">
-            <div className="truncate font-mono text-xs text-foreground/70">
-              {p.done ? 'Scan complete' : p.current}
-            </div>
+            <div className="truncate font-mono text-xs text-foreground/70">{p.done ? 'Scan complete' : p.current}</div>
             <div className="font-mono text-xs text-muted-foreground">
               {p.files} files · {formatBytes(p.bytes)} read in main
             </div>

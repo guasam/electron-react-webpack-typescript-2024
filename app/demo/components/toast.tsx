@@ -38,7 +38,10 @@ export function Toaster() {
           className="animate-in slide-in-from-bottom-2 fade-in pointer-events-auto flex items-center gap-3 rounded-lg border border-brand/60 bg-popover px-4 py-2.5 text-sm text-popover-foreground shadow-lg"
         >
           <span>{t.message}</span>
-          <button onClick={() => dismiss(t.id)} className="text-muted-foreground transition-colors hover:text-foreground">
+          <button
+            onClick={() => dismiss(t.id)}
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
             <X className="size-3.5" />
           </button>
         </div>
