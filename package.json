@@ -19,10 +19,10 @@
     "electron:build:mac": "electron-builder --mac",
     "electron:build:linux": "electron-builder --linux",
     "electron:build:dir": "electron-builder --dir",
-    "build:unpack": "run-s vite:build:app electron:build:dir",
-    "build:win": "run-s vite:build:app electron:build:win",
-    "build:mac": "run-s vite:build:app electron:build:mac",
-    "build:linux": "run-s vite:build:app electron:build:linux"
+    "build:unpack": "npm run vite:build:app && npm run electron:build:dir",
+    "build:win": "npm run vite:build:app && npm run electron:build:win",
+    "build:mac": "npm run vite:build:app && npm run electron:build:mac",
+    "build:linux": "npm run vite:build:app && npm run electron:build:linux"
   },
   "repository": {
     "type": "git",
@@ -35,12 +35,10 @@
     ]
   },
   "dependencies": {
-    "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@tanstack/react-query": "^5.101.4",
-    "@tanstack/react-query-devtools": "^5.101.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "electron-conveyor": "file:../electron-conveyor",
@@ -52,11 +50,8 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@electron-toolkit/eslint-config-prettier": "^3.0.0",
-    "@electron-toolkit/eslint-config-ts": "^3.1.0",
     "@electron-toolkit/tsconfig": "^2.0.0",
     "@eslint/js": "^9.39.5",
-    "@rushstack/eslint-patch": "^1.16.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
@@ -69,12 +64,12 @@
     "eslint": "^9.39.5",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "npm-run-all": "^4.1.5",
     "prettier": "^3.9.6",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
+    "typescript-eslint": "^8.67.0",
     "vite": "^7.3.6"
   }
 }
