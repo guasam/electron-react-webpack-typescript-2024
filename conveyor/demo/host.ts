@@ -5,7 +5,8 @@ import type { ConveyorWindowManager } from 'electron-conveyor/main'
  * lib/main at startup so conveyor/demo doesn't import app-window code (which would cycle).
  */
 interface DemoHost {
-  openWindow: () => void
+  /** `page` is a playground page id the new window should open on. */
+  openWindow: (page?: string) => void
   windows: ConveyorWindowManager
 }
 

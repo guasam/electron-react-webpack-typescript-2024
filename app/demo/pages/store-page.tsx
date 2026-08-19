@@ -34,7 +34,11 @@ export function StorePage() {
       description="Main owns the state; every window mirrors it live. Open a second window, then change the counter or notes and watch both windows stay in sync."
     >
       <div className="flex items-center gap-3">
-        <Button variant={ready ? 'outline' : 'default'} className="w-fit" onClick={() => conveyor.windows.open()}>
+        <Button
+          variant={ready ? 'outline' : 'default'}
+          className="w-fit"
+          onClick={() => conveyor.windows.open('store')}
+        >
           <PanelLeftOpen className="size-4" /> Open 2nd window
         </Button>
         {ready ? (

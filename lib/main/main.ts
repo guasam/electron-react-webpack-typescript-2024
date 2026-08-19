@@ -24,9 +24,9 @@ app.whenReady().then(() => {
   let windowCount = 1
   setDemoHost({
     windows,
-    openWindow: () => {
+    openWindow: (page) => {
       windowCount += 1
-      windows.register(`window-${windowCount}`, createAppWindow())
+      windows.register(`window-${windowCount}`, createAppWindow(page))
     },
   })
 

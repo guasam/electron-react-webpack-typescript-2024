@@ -11,7 +11,12 @@ import { Toaster, useToasts } from './components/toast'
  * Strippable: delete this `app/demo/` folder and the `<Playground/>` in App.tsx.
  */
 export function Playground() {
-  const [active, setActive] = useState('overview')
+  // A window opened with `windows.open(pageId)` carries the page in its URL hash (see lib/main/app.ts),
+  // so a second window can land straight on the capability that opened it.
+  const [active, setActive] = useState(() => {
+    const requested = decodeURIComponent(window.location.hash.slice(1))
+    return PAGES.some((p) => p.id === requested) ? requested : 'overview'
+  })
   const [codeOpen, setCodeOpen] = useState(false)
   const Page = (PAGES.find((p) => p.id === active) ?? PAGES[0]).component
 
