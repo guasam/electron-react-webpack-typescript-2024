@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Send, Square } from 'lucide-react'
 import { conveyor } from '@/conveyor/client'
-import { Button } from '@/app/components/ui/button'
+import { Button } from '../components/button'
 import { Input } from '@/app/components/ui/input'
 import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/PageShell'

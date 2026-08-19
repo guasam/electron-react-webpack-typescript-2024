@@ -35,6 +35,7 @@
   /* Brand coral accent — the one new color; everything else maps onto the neutrals above. */
   --color-brand: var(--brand);
   --color-brand-soft: var(--brand-soft);
+  --color-brand-hover: var(--brand-hover);
   --color-success: var(--success);
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -66,6 +67,7 @@
     --ring: #d3cec6;
     --brand: #ff5c3a;
     --brand-soft: rgba(255, 92, 58, 0.13);
+    --brand-hover: #f04724;
     --success: #16a34a;
     --radius: 0.5rem;
   }
@@ -94,6 +96,7 @@
     --ring: #2e3335;
     --brand: #ff5c3a;
     --brand-soft: rgba(255, 92, 58, 0.13);
+    --brand-hover: #ff7053;
     --success: #4ade80;
     --radius: 0.5rem;
   }

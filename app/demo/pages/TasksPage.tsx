@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Play, Loader2 } from 'lucide-react'
 import { conveyor, useConveyorEvent } from '@/conveyor/client'
-import { Button } from '@/app/components/ui/button'
+import { Button } from '../components/button'
 import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/PageShell'
 import { formatBytes } from '../components/format'
