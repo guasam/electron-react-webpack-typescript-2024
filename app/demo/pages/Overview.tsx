@@ -90,7 +90,7 @@ export function Overview({ onNavigate }: PageProps) {
             <button
               key={s.id}
               onClick={() => onNavigate(s.id)}
-              className="group flex items-center gap-4 rounded-xl border border-border bg-card px-[18px] py-4 text-left transition-[border-color,transform] duration-150 hover:translate-x-[3px] hover:border-brand"
+              className="group flex transform-gpu items-center gap-4 rounded-xl border border-border bg-card px-[18px] py-4 text-left transition-transform duration-200 ease-out hover:translate-x-1 hover:border-brand"
             >
               <span className="w-4 flex-none font-mono text-[10px] text-muted-foreground/60">
                 {String(i + 1).padStart(2, '0')}
