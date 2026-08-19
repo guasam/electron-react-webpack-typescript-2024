@@ -31,7 +31,7 @@ export function WindowFrame({ title, children }: { title?: string; children: Rea
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background text-foreground">
       <Titlebar title={title} />
-      <main className="min-h-0 flex-1 overflow-auto">{children}</main>
+      <main className="min-h-0 flex-1 overflow-hidden">{children}</main>
     </div>
   )
 }

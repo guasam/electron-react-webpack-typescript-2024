@@ -1,16 +1,15 @@
 import { WindowFrame } from './shell'
+import { Playground } from './playground'
 import './styles/app.css'
 
 /**
- * App root — the core shell. The playground mounts inside `WindowFrame` in Phase 3; strip it and
- * this is your clean starting point (themed titlebar + conveyor wired, nothing else).
+ * App root — the core shell with the playground mounted inside. To strip the playground: remove the
+ * <Playground /> line below and delete app/playground + conveyor/demo (see README).
  */
 export default function App() {
   return (
     <WindowFrame title="Electron React App">
-      <div className="flex h-full items-center justify-center">
-        <p className="text-sm text-muted-foreground">App shell ready — playground mounts here.</p>
-      </div>
+      <Playground />
     </WindowFrame>
   )
 }
