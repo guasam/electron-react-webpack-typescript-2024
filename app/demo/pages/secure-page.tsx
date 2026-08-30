@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Lock, LockOpen, KeyRound } from 'lucide-react'
-import { ConveyorError } from 'electron-conveyor/renderer'
+import { ConveyorError } from 'electron-conveyor/react'
 import { conveyor } from '@/conveyor/client'
 import { Button } from '../components/button'
 import { Input } from '@/app/components/ui/input'
@@ -35,15 +35,17 @@ export function SecurePage() {
       setSecret(await conveyor.secure.readSecret())
     } catch (e) {
       setSecret(null)
-      setError(e instanceof ConveyorError ? e.message : String(e))
+      // Errors keep their code across the IPC boundary — branch on it, not on message strings.
+      if (e instanceof ConveyorError && e.code === 'LOCKED') setError(e.message)
+      else setError(e instanceof Error ? e.message : String(e))
     }
   }
 
   return (
     <PageShell
-      badge="Middleware + Context · .use()"
+      badge="Middleware + Context · query.use()"
       title="A guarded procedure"
-      description="readSecret is wrapped by a timing middleware and guarded by an unlock check, and reads the app context. Read it locked (it throws), unlock with 1234, read again."
+      description="readSecret is built on a guarded base (query.use(requireUnlocked)) and reads the app context. Read it locked (it throws a typed LOCKED error), unlock with 1234, read again."
     >
       <Card className="gap-0 p-4">
         <div className="flex items-center gap-2">

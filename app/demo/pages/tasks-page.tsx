@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Play, Loader2 } from 'lucide-react'
-import { conveyor, useConveyorEvent } from '@/conveyor/client'
+import { conveyor } from '@/conveyor/client'
 import { Button } from '../components/button'
 import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/page-shell'
@@ -18,10 +18,7 @@ export function TasksPage() {
   const [p, setP] = useState<Progress | null>(null)
   const running = p ? !p.done : false
 
-  useConveyorEvent(
-    (c) => c.tasks.onProgress,
-    (next) => setP(next)
-  )
+  conveyor.tasks.onProgress.useEvent((next) => setP(next))
 
   const run = () => {
     if (running) return
@@ -31,7 +28,7 @@ export function TasksPage() {
 
   return (
     <PageShell
-      badge="Events · event()"
+      badge="Events · useEvent()"
       title="Background task progress"
       description="A fire-and-forget call starts a real directory scan in the main process (reading the filesystem, which the renderer can't). It pushes genuine progress back through a typed event: the actual file it's on, and the running file and byte totals."
     >

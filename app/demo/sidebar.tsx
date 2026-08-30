@@ -1,9 +1,9 @@
-import { conveyor, useConveyorQuery } from '@/conveyor/client'
+import { conveyor } from '@/conveyor/client'
 import { cn } from '@/lib/utils'
 import { PAGES } from './registry'
 
 export function Sidebar({ active, onSelect }: { active: string; onSelect: (id: string) => void }) {
-  const version = useConveyorQuery(['system', 'info'], (c) => c.system.info()).data?.version
+  const version = conveyor.system.info.useQuery().data?.version
 
   return (
     <nav className="flex w-59 flex-none flex-col border-r border-border bg-card pt-5 pb-3.5">

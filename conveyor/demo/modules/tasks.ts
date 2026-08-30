@@ -2,7 +2,7 @@ import { app } from 'electron'
 import { readdir, stat } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 import { z } from 'zod'
-import { defineModule, procedure, event } from '../../init'
+import { defineModule, command, event } from '../../init'
 import { createEmitter } from 'electron-conveyor/main'
 
 const SKIP = new Set(['node_modules', '.git', 'dist', 'out', '.vite', 'release', 'coverage'])
@@ -14,7 +14,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
  * stats every file, something the renderer cannot do) and reports genuine progress (the current file,
  * running count and byte total) to the calling window via the `onProgress` push event.
  */
-export const tasksModule = defineModule('tasks', {
+export const tasksModule = defineModule({
   onProgress: event(
     z.object({
       percent: z.number(),
@@ -25,7 +25,7 @@ export const tasksModule = defineModule('tasks', {
     })
   ),
 
-  run: procedure().handle(async ({ ctx }) => {
+  run: command(async ({ ctx }) => {
     const win = ctx.window
     if (!win) return
     const emit = createEmitter(tasksModule, win)

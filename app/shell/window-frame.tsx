@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, type ReactNode } from 'react'
-import { conveyor, useConveyorEvent } from '@/conveyor/client'
+import { conveyor } from '@/conveyor/client'
 import { Titlebar } from './titlebar'
 import { useWindowStore } from './window-store'
 import { useThemeStore } from './theme-store'
@@ -25,8 +25,8 @@ export function WindowFrame({ title, children }: { title?: string; children: Rea
       .then((i) => setInit({ platform: i.platform, minimizable: i.minimizable, maximizable: i.maximizable }))
   }, [setInit])
 
-  useConveyorEvent((c) => c.window.onFocusChange, setFocused)
-  useConveyorEvent((c) => c.window.onMaximizeChange, setMaximized)
+  conveyor.window.onFocusChange.useEvent(setFocused)
+  conveyor.window.onMaximizeChange.useEvent(setMaximized)
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background text-foreground">

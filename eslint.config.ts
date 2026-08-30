@@ -10,6 +10,8 @@ export default [
       'dist/**',
       'build/**',
       'out/**',
+      'scripts/**', // plain node build scripts, outside the tsconfig project
+
       '.vscode/**',
       '.git/**',
       '.gitignore',
@@ -21,7 +23,7 @@ export default [
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{js,mjs,jsx,ts,tsx}'],
     plugins: {
       react: reactPlugin,
       'react-hooks': reactHooksPlugin,

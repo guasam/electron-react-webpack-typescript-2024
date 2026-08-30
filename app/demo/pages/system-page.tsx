@@ -1,16 +1,16 @@
-import { useConveyorQuery } from '@/conveyor/client'
+import { conveyor } from '@/conveyor/client'
 import { Card } from '@/app/components/ui/card'
 import { PageShell } from '../components/page-shell'
 import { formatBytes } from '../components/format'
 
 export function SystemPage() {
-  const info = useConveyorQuery(['system', 'info'], (c) => c.system.info(), { refetchInterval: 1500 })
+  const info = conveyor.system.info.useQuery({ refetchInterval: 1500 })
   const d = info.data
   const usedPct = d ? Math.round(((d.totalMem - d.freeMem) / d.totalMem) * 100) : 0
 
   return (
     <PageShell
-      badge="Query · useConveyorQuery"
+      badge="Query · useQuery()"
       title="Live system monitor"
       description="A typed procedure reads real main-process system info; TanStack Query caches it and refetches every 1.5s. Watch the memory bar move."
     >

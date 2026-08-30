@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Code2 } from 'lucide-react'
-import { useConveyorEvent } from '@/conveyor/client'
+import { conveyor } from '@/conveyor/client'
 import { PAGES } from './registry'
 import { Sidebar } from './sidebar'
 import { CodeDrawer } from './code-drawer'
@@ -21,10 +21,7 @@ export function Playground() {
   const Page = (PAGES.find((p) => p.id === active) ?? PAGES[0]).component
 
   // Any broadcast lands as a toast in every window, whatever page it's on.
-  useConveyorEvent(
-    (c) => c.notify.onNotify,
-    (message) => useToasts.getState().show(message)
-  )
+  conveyor.notify.onNotify.useEvent((message) => useToasts.getState().show(message))
 
   return (
     <div className="flex h-full min-h-0">

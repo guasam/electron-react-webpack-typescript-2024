@@ -1,25 +1,29 @@
 import type { BrowserWindow } from 'electron'
-import { createRouter } from 'electron-conveyor/main'
+import { createRouter, devLogger } from 'electron-conveyor/main'
+import { windows, openAppWindow } from '@/lib/main/app'
 import { windowModule, setupWindowEvents } from './modules/window'
 import { webModule } from './modules/web'
-import { demoModules } from './demo'
+import { demoModules, demoStores } from './demo' // @demo
 
 /**
- * The app's IPC surface. Runtime is MAIN-ONLY; the renderer imports only `type AppRouter`.
- * `window` is the one core module (the titlebar needs it); the rest come from the playground.
+ * The app's whole IPC surface — modules, stores, context, global middleware — registered in one
+ * place. Runtime is MAIN-ONLY; the renderer imports only `type AppRouter`. `window` and `web` are
+ * the core modules (the titlebar needs them); the rest come from the playground.
  */
 
-/** Main-process start time — surfaced to handlers as `ctx.appStartedAt` via `createContext`. */
+/** Main-process start time — surfaced to handlers as `ctx.appStartedAt`. */
 const APP_STARTED_AT = Date.now()
 
 export const router = createRouter(
   {
     window: windowModule,
     web: webModule,
-    ...demoModules, // playground: remove this spread to strip
+    ...demoModules, // @demo
   },
   {
-    createContext: () => ({ appStartedAt: APP_STARTED_AT }),
+    createContext: () => ({ appStartedAt: APP_STARTED_AT, windows, openWindow: openAppWindow }),
+    use: [devLogger], // per-call timing in dev, a no-op in packaged builds
+    stores: demoStores, // @demo
   }
 )
 

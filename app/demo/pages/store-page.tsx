@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Plus, Minus, X, PanelLeftOpen } from 'lucide-react'
-import { useConveyorStore, useConveyorActions } from 'electron-conveyor/renderer'
-import { conveyor, useConveyorQuery } from '@/conveyor/client'
+import { useConveyorStore, useConveyorActions } from 'electron-conveyor/react'
+import { conveyor } from '@/conveyor/client'
 import { sharedStore } from '@/conveyor/demo/stores/shared'
 import { cn } from '@/lib/utils'
 import { Button } from '../components/button'
@@ -15,8 +15,7 @@ export function StorePage() {
   const { increment, decrement, add, remove, clear } = useConveyorActions(sharedStore)
   const [text, setText] = useState('')
 
-  const windowCount =
-    useConveyorQuery(['windows', 'count'], (c) => c.windows.count(), { refetchInterval: 800 }).data ?? 1
+  const windowCount = conveyor.windows.count.useQuery({ refetchInterval: 800 }).data ?? 1
   const ready = windowCount > 1
 
   const submit = () => {

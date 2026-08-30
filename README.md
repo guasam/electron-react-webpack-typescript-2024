@@ -1,6 +1,8 @@
 # Electron React App
 
-A modern Electron application template with React, Vite, TypeScript, and TailwindCSS. This project provides a solid foundation for developing cross-platform desktop applications.
+A modern Electron application template with React, Vite, TypeScript, and TailwindCSS — built
+around **[electron-conveyor](https://github.com/guasam/electron-conveyor)** for type-safe IPC and
+cross-window state.
 
 <br />
 
@@ -27,6 +29,7 @@ A modern Electron application template with React, Vite, TypeScript, and Tailwin
 
 🔹 **[Electron](https://www.electronjs.org)** - Cross-platform desktop application framework.<br />
 🔹 **[React](https://react.dev)** - The library for web and native user interfaces.<br />
+🔹 **[electron-conveyor](https://github.com/guasam/electron-conveyor)** - Type-safe IPC + cross-window state.<br />
 🔹 **[TypeScript](https://www.typescriptlang.org)** - Type-safe JavaScript.<br />
 🔹 **[Shadcn UI](https://ui.shadcn.com)** - Beautiful and accessible component library.<br />
 🔹 **[TailwindCSS](https://tailwindcss.com)** - Utility-first CSS framework.<br />
@@ -39,14 +42,16 @@ A modern Electron application template with React, Vite, TypeScript, and Tailwin
 
 | Feature                     | Description                                                                    |
 | --------------------------- | ------------------------------------------------------------------------------ |
-| **Conveyor**                | Type-safe inter-process communication with Zod validation                      |
+| **Conveyor**                | Type-safe IPC: queries, commands, streams, events — end-to-end inference       |
+| **Cross-Window Stores**     | Main-owned state synced live across every window, with opt-in persistence      |
+| **Conveyor Playground**     | Interactive demo of every primitive, strippable with one command               |
+| **Sandboxed Renderer**      | `sandbox: true` out of the box — the conveyor preload is sandbox-compatible    |
 | **Custom Titlebar & Menus** | Style the window titlebar and menus as you want                                |
 | **Clean Project Structure** | Separation of main and renderer processes                                      |
 | **Resources Protocol**      | Access local file resources via `res://` protocol                              |
 | **Import Path Aliases**     | Keep your imports organized and clean                                          |
 | **Theme Switcher**          | Built-in theme switching for dark and light mode                               |
 | **Error Boundary**          | Built-in React error boundary with detailed error reporting                    |
-| **Welcome Kit**             | Interactive showcase with Framer Motion animations                             |
 | **Code Formatting**         | Prettier and ESLint pre-configured for code quality                            |
 | **Hot Reload**              | Lightning-fast development with Vite's HMR                                     |
 | **VS Code Debugging**       | Pre-configured launch configurations for debugging main and renderer processes |
@@ -54,8 +59,6 @@ A modern Electron application template with React, Vite, TypeScript, and Tailwin
 <br />
 
 ## Installation
-
-Clone the repository:
 
 ```bash
 # Clone the repository
@@ -72,217 +75,156 @@ npm install
 
 ## Development
 
-Start the development server:
-
 ```bash
 npm run dev
 ```
 
-This will start Electron with hot-reload enabled so you can see changes in real time.
+This starts Electron with hot-reload. The app opens on the **Conveyor Playground** — an
+interactive tour of every IPC primitive with the real source behind each demo (hit "View code").
 
-<br />
+When you're ready to build your own app on the shell:
 
-## Conveyor - Inter-Process Communication
-
-**Conveyor** is a type-safe IPC system that enables secure communication between your React frontend and Electron's main process. It uses Zod schemas for runtime validation and provides full TypeScript support.
-
-🔹 **Type-safe** - Full TypeScript support with compile-time and runtime validation<br />
-🔹 **Secure** - Validates all data using Zod schemas<br />
-🔹 **Modular** - Clean API structure with organized handlers<br />
-🔹 **Simple** - Easy-to-use React hooks and global APIs<br />
-
-<br />
-
-### Quick Start
-
-Use the `useConveyor` hook in your React components:
-
-```tsx
-import { useConveyor } from '@/app/hooks/use-conveyor'
-
-function MyComponent() {
-  const { version } = useConveyor('app')
-  const { windowMinimize } = useConveyor('window')
-
-  const handleGetVersion = async () => {
-    console.log('App version:', await version())
-    console.log('App version:', await window.conveyor.app.version()) // OR
-  }
-
-  return (
-    <div>
-      <button onClick={handleGetVersion}>Get Version</button>
-      <button onClick={windowMinimize}>Minimize Window</button>
-    </div>
-  )
-}
+```bash
+npm run strip-demo
 ```
 
-### Available APIs
-
-Conveyor provides two ways to access IPC methods:
-
-```tsx
-// Method 1: React Hook (Recommended)
-const { version } = useConveyor('app')
-await version()
-
-// Method 2: React Hook Global Conveyor
-const conveyor = useConveyor()
-await conveyor.app.version()
-
-// Method 3: Global Window Object
-await window.conveyor.app.version()
-```
-
-### Built-in APIs
-
-| API      | Description                | Example                            |
-| -------- | -------------------------- | ---------------------------------- |
-| `app`    | App specfiic operations    | `conveyor.app.version()`           |
-| `window` | Window specific operations | `conveyor.window.windowMinimize()` |
+This removes the playground (`app/demo/`, `conveyor/demo/`) and leaves the minimal shell:
+titlebar, window/web modules, theming.
 
 <br />
 
-### Creating Custom APIs
+## Conveyor — Inter-Process Communication
 
-Follow these 4 simple steps to add your own IPC methods:
+The template's IPC is powered by [electron-conveyor](https://github.com/guasam/electron-conveyor).
+One definition in main is the single source of truth for a feature; the renderer client is
+**inferred** from it — no channel strings, no hand-written API classes, no query keys.
 
-#### Step 1: Define Schema
+Five primitives:
 
-Create a schema in `lib/conveyor/schemas/app-schema.ts`:
+| You want…                            | Use           | Renderer side                        |
+| ------------------------------------ | ------------- | ------------------------------------ |
+| Read something from main             | `query()`     | `await it()`, or `.useQuery()`       |
+| Tell main to do something            | `command()`   | `await it()`, or `.useMutation()`    |
+| Chunks pushed as they're produced    | `stream()`    | `for await`, or `.useStream()`       |
+| Main pushing to the renderer         | `event()`     | `.subscribe(cb)`, or `.useEvent(cb)` |
+| State shared live across all windows | `defineStore` | `useConveyorStore(def)`              |
+
+### Adding a feature (two edits)
+
+**1. Define the module** in `conveyor/modules/`:
 
 ```ts
+// conveyor/modules/notes.ts — runs in MAIN only
 import { z } from 'zod'
+import { defineModule, query, command } from '../init'
 
-export const appIpcSchema = {
-  // Simple method with no parameters
-  'get-app-info': {
-    args: z.tuple([]),
-    return: z.object({
-      name: z.string(),
-      version: z.string(),
-      platform: z.string(),
-    }),
-  },
+export const notesModule = defineModule({
+  list: query(() => readNotes()),
 
-  // Method with parameters
-  'save-user-preference': {
-    args: z.tuple([
-      z.object({
-        key: z.string(),
-        value: z.string(),
-      }),
-    ]),
-    return: z.boolean(),
-  },
-} as const
+  // input crosses the trust boundary → schema required, validated on every call
+  save: command(z.object({ title: z.string(), body: z.string() }), ({ input }) => saveNote(input)),
+})
 ```
 
-#### Step 2: Add API Method
-
-Update `lib/conveyor/api/app-api.ts`:
+**2. Register it** in `conveyor/router.ts`:
 
 ```ts
-export class AppApi extends ConveyorApi {
-  getAppInfo = () => this.invoke('get-app-info')
-  saveUserPreference = (key: string, value: string) => this.invoke('save-user-preference', { key, value })
-}
+export const router = createRouter(
+  {
+    window: windowModule,
+    web: webModule,
+    notes: notesModule, // ← the key becomes the module id
+  },
+  { createContext, use: [devLogger] }
+)
 ```
 
-#### Step 3: Implement Handler
+Done — the renderer client already knows it, fully typed:
 
-Add handler in `lib/conveyor/handlers/app-handler.ts`:
+```tsx
+import { conveyor } from '@/conveyor/client'
 
-```ts
-import { handle } from '@/lib/main/shared'
-import { app } from 'electron'
-
-export const registerAppHandlers = () => {
-  handle('get-app-info', () => ({
-    name: app.getName(),
-    version: app.getVersion(),
-    platform: process.platform,
-  }))
-
-  handle('save-user-preference', async ({ key, value }) => {
-    // Save to file, database, etc.
-    console.log(`Saving ${key}: ${value}`)
-    return true
+function Notes() {
+  const notes = conveyor.notes.list.useQuery() // key derived from the path — never hand-written
+  const save = conveyor.notes.save.useMutation({
+    onSuccess: () => conveyor.notes.list.invalidate(),
   })
+
+  return <button onClick={() => save.mutate({ title: 'Hi', body: '...' })}>Save</button>
 }
 ```
 
-#### Step 4: Register Handler
+Outside React, every member is a plain typed call: `await conveyor.notes.list()`.
 
-In `lib/main/app.ts`:
+### Handler context
+
+Every handler receives `ctx`: the calling `window` and `sender`, plus the app context defined in
+`conveyor/init.ts` (this template provides `appStartedAt`, the `windows` manager, and
+`openWindow`). Middleware can guard and widen it:
 
 ```ts
-import { registerAppHandlers } from '@/lib/conveyor/handlers/app-handler'
-
-// During app initialization
-registerAppHandlers()
+const authed = command.use(requireUser) // a reusable guarded base
+export const account = defineModule({
+  delete: authed(({ ctx }) => deleteAccount(ctx.user.id)),
+})
 ```
 
-### Usage in Components
+### Streams (LLM-style)
 
-```tsx
-function SettingsComponent() {
-  const conveyor = useConveyor()
-  const [appInfo, setAppInfo] = useState(null)
-
-  useEffect(() => {
-    // Get app information
-    conveyor.app.getAppInfo().then(setAppInfo)
-  }, [])
-
-  const saveTheme = (theme: string) => {
-    conveyor.app.saveUserPreference('theme', theme)
+```ts
+// main
+respond: stream(z.string(), async function* ({ input, signal }) {
+  for await (const token of llm.complete(input)) {
+    if (signal.aborted) return
+    yield token
   }
+})
 
-  return (
-    <div>
-      <h2>App Info</h2>
-      {appInfo && (
-        <p>
-          {appInfo.name} v{appInfo.version} on {appInfo.platform}
-        </p>
-      )}
-
-      <button onClick={() => saveTheme('dark')}>Set Dark Theme</button>
-    </div>
-  )
-}
+// renderer
+for await (const token of conveyor.stream.respond(prompt)) append(token)
 ```
 
-### Error Handling
+### Events (main → renderer push)
 
-```tsx
-const handleApiCall = async () => {
-  try {
-    const result = await conveyor.app.getAppInfo()
-    console.log('Success:', result)
-  } catch (error) {
-    console.error('API call failed:', error)
-    // Handle validation errors, network issues, etc.
-  }
-}
+```ts
+// main — typed emitters per window or fan-out via the window manager
+const emit = createEmitter(windowModule, win)
+win.on('focus', () => emit.onFocusChange(true))
+
+// renderer
+conveyor.window.onFocusChange.useEvent(setFocused)
 ```
 
-### Type Safety Benefits
+### Cross-window stores
 
-```tsx
-// ✅ TypeScript enforces correct types
-const info = await conveyor.app.getAppInfo() // Returns { name: string, version: string, platform: string }
+```ts
+// conveyor/demo/stores/shared.ts — pure, imported by BOTH processes
+export const sharedStore = defineStore('shared', {
+  state: { count: 0, notes: [] as string[] },
+  schemas: { add: z.string() }, // payloads validated in main; types flow from the schema
+  actions: {
+    add: (s, note) => {
+      s.notes.push(note)
+    },
+    increment: (s) => {
+      s.count += 1
+    },
+  },
+  persist: true, // survives restarts (JSON under userData)
+})
 
-// ❌ TypeScript error - wrong parameter type
-const result = await conveyor.app.saveUserPreference(123, 'value') // Error: Expected string, got number
-
-// ✅ Runtime validation ensures data integrity
-const valid = await conveyor.app.saveUserPreference('theme', 'dark') // Validates at runtime
+// renderer — feels local, synced across every window
+const count = useConveyorStore(sharedStore, (s) => s.count)
+const { add, increment } = useConveyorActions(sharedStore)
 ```
 
-📖 **For advanced usage and detailed documentation, see [Conveyor README](lib/conveyor/README.md)**
+### Errors
+
+Failures re-throw in the renderer as `ConveyorError` with a stable `code` — including custom codes
+thrown by your handlers (`throw new ConveyorError('LOCKED', '...')`). Branch on `err.code`, never
+on message strings. See the playground's **Middleware** page for a working example.
+
+📖 **Full API documentation: [electron-conveyor](https://github.com/guasam/electron-conveyor)**
 
 <br />
 
@@ -317,22 +259,7 @@ When you press the toggle key:
 
 To add, remove or modify menu items, update the following file:
 
-- `app/components/window/menus.ts`
-
-<br />
-
-## Tailwind CSS
-
-The project supports **Tailwind** for styling:
-
-```ts
-// Example component with Tailwind classes
-const Button = () => (
-  <button className="px-4 py-2 text-white rounded-md">
-    Click me
-  </button>
-);
-```
+- `app/shell/menu.ts`
 
 <br />
 
@@ -341,64 +268,52 @@ const Button = () => (
 #### `app/` - Renderer Process
 
 - **React application** that runs in the browser window
-- Contains all UI components, styles, and client-side logic
-- Uses Vite for fast development and building
+- `app/shell/` — titlebar, menus, window frame, theme
+- `app/demo/` — the strippable Conveyor playground
 
-#### `lib/conveyor/` - Conveyor - Inter-Process Communication
+#### `conveyor/` - The IPC Surface
 
-- **Type-safe communication** between renderer and main processes
-- **API classes** provide clean interfaces for IPC calls
-- **Handlers** implement the actual logic in the main process
-- **Schemas** define data contracts with Zod validation
+- `conveyor/init.ts` — authoring primitives bound to the app's context
+- `conveyor/modules/` — feature modules (**main-process only**; the renderer imports only `type AppRouter`)
+- `conveyor/router.ts` — the single registration point (modules, stores, middleware, context)
+- `conveyor/client.ts` — the typed renderer client with hooks
+- `conveyor/demo/` — the playground's modules and stores (strippable)
 
 #### `lib/main/` - Main Process
 
-- **Electron main process** code
-- Handles window creation, app lifecycle, and system integration
-- Registers IPC handlers and manages app state
+- Window creation (`app.ts`, with the window manager), app lifecycle, `res://` protocol
 
-#### `lib/preload/` - Preload Scripts
+#### `lib/preload/` - Preload Script
 
-- **Security bridge** between renderer and main processes
-- Exposes safe APIs to the renderer process
-- Implements context isolation for security
-
-<br />
-
-## Development Workflow
-
-1. **UI Development**: Work in `app/` directory with React components
-2. **IPC Communication**: Define schemas, add API methods, implement handlers
-3. **Window Features**: Customize window behavior in `app/components/window/`
-4. **Prettier Formatting**: Use `npm run format` to format the code.
-5. **ESLint**: Use `npm run lint` to lint the code.
+- Two lines: expose the conveyor bridge. It never changes as your API grows, and it is
+  sandbox-compatible — the renderer runs with `sandbox: true`
 
 <br />
 
 ## Path Aliases
 
-The project uses TypeScript path aliases for clean imports:
-
 ```ts
-// Instead of relative paths like:
-import { Button } from '../../../components/ui/button'
-
-// Use clean aliases:
 import { Button } from '@/app/components/ui/button'
-import { conveyor } from '@/lib/conveyor/api'
+import { conveyor } from '@/conveyor/client'
 ```
 
-Configured aliases by default, customise as you want:
+- `@/app/` → `app/` (renderer)
+- `@/lib/` → `lib/` (main + preload)
+- `@/conveyor/` → `conveyor/` (the IPC surface)
+- `@/resources/` → `resources/` (build resources)
 
-- `@/` → `app/` (application code - renderer process)
-- `@/lib/` → `lib/` (shared library code containing conveyor, main, preload, etc.)
-- `@/resources/` → `resources/` (build resources for the application)
+<br />
+
+## Development Workflow
+
+1. **UI Development**: Work in `app/` with React components
+2. **IPC**: Add a module in `conveyor/modules/`, register it in `conveyor/router.ts`
+3. **Window Features**: Customize the shell in `app/shell/`
+4. **Checks**: `npm run typecheck`, `npm run lint`, `npm run format`
 
 <br />
 
 ## Building for Production
-
-Build the application for your platform:
 
 ```bash
 # For Windows

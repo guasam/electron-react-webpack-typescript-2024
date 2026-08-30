@@ -1,53 +1,38 @@
 import { BrowserWindow } from 'electron'
 import { z } from 'zod'
-import { defineModule, procedure, event } from '../init'
+import { defineModule, query, command, event } from '../init'
 import { createEmitter } from 'electron-conveyor/main'
 
-const windowInit = z.object({
-  width: z.number(),
-  height: z.number(),
-  minimizable: z.boolean(),
-  maximizable: z.boolean(),
-  platform: z.string(),
-})
+export const windowModule = defineModule({
+  init: query(({ ctx }) => {
+    const win = ctx.window
+    if (!win) throw new Error('window.init called without an owning window')
+    const { width, height } = win.getBounds()
+    return {
+      width,
+      height,
+      minimizable: win.isMinimizable(),
+      maximizable: win.isMaximizable(),
+      platform: process.platform,
+    }
+  }),
 
-export const windowModule = defineModule('window', {
-  init: procedure()
-    .output(windowInit)
-    .handle(({ ctx }) => {
-      const win = ctx.window
-      if (!win) throw new Error('window.init called without an owning window')
-      const { width, height } = win.getBounds()
-      return {
-        width,
-        height,
-        minimizable: win.isMinimizable(),
-        maximizable: win.isMaximizable(),
-        platform: process.platform,
-      }
-    }),
+  isMinimizable: query(({ ctx }) => ctx.window?.isMinimizable() ?? false),
+  isMaximizable: query(({ ctx }) => ctx.window?.isMaximizable() ?? false),
 
-  isMinimizable: procedure()
-    .output(z.boolean())
-    .handle(({ ctx }) => ctx.window?.isMinimizable() ?? false),
-
-  isMaximizable: procedure()
-    .output(z.boolean())
-    .handle(({ ctx }) => ctx.window?.isMaximizable() ?? false),
-
-  minimize: procedure().handle(({ ctx }) => {
+  minimize: command(({ ctx }) => {
     ctx.window?.minimize()
   }),
 
-  maximize: procedure().handle(({ ctx }) => {
+  maximize: command(({ ctx }) => {
     ctx.window?.maximize()
   }),
 
-  close: procedure().handle(({ ctx }) => {
+  close: command(({ ctx }) => {
     ctx.window?.close()
   }),
 
-  maximizeToggle: procedure().handle(({ ctx }) => {
+  maximizeToggle: command(({ ctx }) => {
     const win = ctx.window
     if (!win) return
     if (win.isMaximized()) win.unmaximize()

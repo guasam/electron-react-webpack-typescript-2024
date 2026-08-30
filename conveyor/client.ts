@@ -1,17 +1,14 @@
-import { createConveyorClient, createConveyorHooks } from 'electron-conveyor/renderer'
+import { QueryClient } from '@tanstack/react-query'
+import { createConveyorReactClient } from 'electron-conveyor/react'
 import type { AppRouter } from './router'
-import type {
-  ConveyorQueryHook,
-  ConveyorMutationHook,
-  ConveyorEventHook,
-  ConveyorStreamHook,
-} from 'electron-conveyor/renderer'
 
-export const conveyor = createConveyorClient<AppRouter>()
+/** The app's TanStack Query client — created here so conveyor's typed `invalidate()` can use it. */
+export const queryClient = new QueryClient()
 
-// Explicit named annotations so these re-exported hooks reference the package's public types
-const hooks = createConveyorHooks(conveyor)
-export const useConveyorQuery: ConveyorQueryHook<AppRouter> = hooks.useConveyorQuery
-export const useConveyorMutation: ConveyorMutationHook<AppRouter> = hooks.useConveyorMutation
-export const useConveyorEvent: ConveyorEventHook<AppRouter> = hooks.useConveyorEvent
-export const useConveyorStream: ConveyorStreamHook<AppRouter> = hooks.useConveyorStream
+/**
+ * The typed IPC client. Every member is callable (`await conveyor.system.info()`) and carries its
+ * hooks: `conveyor.system.info.useQuery()`, `conveyor.web.openUrl.useMutation()`,
+ * `conveyor.window.onFocusChange.useEvent(cb)`, `conveyor.stream.respond.useStream({...})` —
+ * query keys derive from the call path, so they are never written by hand.
+ */
+export const conveyor = createConveyorReactClient<AppRouter>({ queryClient })

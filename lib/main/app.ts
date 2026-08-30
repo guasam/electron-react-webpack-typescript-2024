@@ -1,7 +1,20 @@
 import { BrowserWindow, shell, app } from 'electron'
 import { join } from 'path'
+import { createWindowManager } from 'electron-conveyor/main'
 import appIcon from '@/resources/build/icon.png?asset'
 import { setupEvents } from '@/conveyor/router'
+
+/** Tracks every window by label; the substrate for cross-window targeting (`ctx.windows`). */
+export const windows = createWindowManager()
+
+let windowCount = 0
+
+/** Open a new tracked app window. `page` deep-links it onto a playground page (via the URL hash). */
+export function openAppWindow(page?: string): BrowserWindow {
+  windowCount += 1
+  const label = windowCount === 1 ? 'main' : `window-${windowCount}`
+  return windows.register(label, createAppWindow(page))
+}
 
 /**
  * Create an app window. `hash` deep-links it: the renderer receives it as `location.hash`, so a
@@ -22,7 +35,9 @@ export function createAppWindow(hash?: string): BrowserWindow {
     title: 'Electron React App',
     webPreferences: {
       preload: join(__dirname, '../preload/preload.js'),
-      sandbox: false,
+      // The conveyor preload is sandbox-compatible (contextBridge + ipcRenderer only), so the
+      // renderer runs fully sandboxed — keep it that way.
+      sandbox: true,
     },
   })
 

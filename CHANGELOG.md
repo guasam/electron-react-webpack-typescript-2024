@@ -4,6 +4,28 @@ All notable changes to the electron-react-app (ERA) are listed here.
 
 <br>
 
+## v13.0.0
+
+- 🚀 **Conveyor v3** (`electron-conveyor@0.4.0`) — the IPC surface is rebuilt around five
+  primitives: `query` / `command` / `stream` / `event` / `defineStore`
+  - The `procedure()` builder is gone; middleware lives on reusable bases (`query.use(guard)`)
+  - React hooks moved onto the client proxy: `conveyor.system.info.useQuery()` — query keys are
+    derived from the call path, never written by hand; typed `invalidate()`
+  - Module ids come from the router keys (`createRouter({ window: windowModule, ... })`)
+  - Stores register through the router, validate action payloads with schemas (schema-first
+    typing), and support `persist: true` — the shared demo store now survives restarts
+  - Errors carry app-defined codes across the boundary (see the Middleware demo's `LOCKED`)
+  - Router-global `devLogger` middleware prints per-call timings in dev
+- 🔒 Renderer now runs with `sandbox: true` (the conveyor preload is sandbox-compatible;
+  electron-conveyor is bundled into the preload since a sandboxed preload cannot resolve
+  node_modules)
+- 🧹 `npm run strip-demo` — one command removes the playground and leaves the minimal shell
+- Removed the `demoHost` indirection: procedures reach the window manager via `ctx.windows` /
+  `ctx.openWindow`
+- Added `npm run typecheck`; README rewritten around the v3 API
+
+<br>
+
 ## v12.1.0
 
 - 🎉 Electron version upgraded to `v40.1.0`

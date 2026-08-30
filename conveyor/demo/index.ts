@@ -1,4 +1,3 @@
-import { registerStore } from 'electron-conveyor/main'
 import { filesModule } from './modules/files'
 import { systemModule } from './modules/system'
 import { streamModule } from './modules/stream'
@@ -9,9 +8,9 @@ import { tasksModule } from './modules/tasks'
 import { sharedStore } from './stores/shared'
 
 /**
- * The playground's demo IPC surface. To strip the playground: delete this `conveyor/demo/` folder
- * and remove the `...demoModules` spread in `router.ts` plus `registerDemoStores()` in
- * `stores/index.ts` and `setDemoHost(...)` in `lib/main/main.ts`.
+ * The playground's demo IPC surface. To strip the playground run `npm run strip-demo`, or by hand:
+ * delete this `conveyor/demo/` folder and remove the `// @demo` marked lines in `conveyor/router.ts`
+ * and `app/app.tsx`, plus the `app/demo/` folder.
  */
 export const demoModules = {
   files: filesModule,
@@ -23,7 +22,5 @@ export const demoModules = {
   tasks: tasksModule,
 }
 
-/** Register the demo cross-window stores on main. */
-export function registerDemoStores() {
-  return { shared: registerStore(sharedStore) }
-}
+/** The playground's cross-window stores, registered by the router. */
+export const demoStores = [sharedStore] as const

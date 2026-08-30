@@ -23,9 +23,9 @@ export function FilesPage() {
 
   return (
     <PageShell
-      badge="Procedure · .handle()"
+      badge="Command · command()"
       title="Native file access"
-      description="A typed renderer-to-main procedure that opens the OS file picker and reads the chosen file as text. Pick a text file (code, JSON, markdown); binary files show their size only."
+      description="A typed renderer-to-main command that opens the OS file picker and reads the chosen file as text. Pick a text file (code, JSON, markdown); binary files show their size only."
     >
       <Card className="gap-0 p-4">
         <Button onClick={open} disabled={loading} className="w-fit">

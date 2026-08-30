@@ -36,7 +36,9 @@ export default defineConfig({
     resolve: {
       alias: aliases,
     },
-    plugins: [externalizeDepsPlugin()],
+    // Bundle electron-conveyor into the preload: a sandboxed preload's `require` can only load
+    // `electron`, so externalized packages would fail to resolve at runtime.
+    plugins: [externalizeDepsPlugin({ exclude: ['electron-conveyor'] })],
   },
   renderer: {
     root: './app',

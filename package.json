@@ -1,6 +1,6 @@
 {
   "name": "era",
-  "version": "12.1.0",
+  "version": "13.0.0",
   "description": "A modern Electron application starter kit with React, Vite, TypeScript, Shadcn UI and TailwindCSS",
   "main": "./out/main/main.js",
   "license": "MIT",
@@ -22,7 +22,9 @@
     "build:unpack": "npm run vite:build:app && npm run electron:build:dir",
     "build:win": "npm run vite:build:app && npm run electron:build:win",
     "build:mac": "npm run vite:build:app && npm run electron:build:mac",
-    "build:linux": "npm run vite:build:app && npm run electron:build:linux"
+    "build:linux": "npm run vite:build:app && npm run electron:build:linux",
+    "strip-demo": "node scripts/strip-demo.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json"
   },
   "repository": {
     "type": "git",
@@ -41,7 +43,7 @@
     "@tanstack/react-query": "^5.101.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "electron-conveyor": "^0.3.0",
+    "electron-conveyor": "file:../electron-conveyor",
     "lucide-react": "^1.32.0",
     "radix-ui": "^1.6.7",
     "tailwind-merge": "^3.6.0",
