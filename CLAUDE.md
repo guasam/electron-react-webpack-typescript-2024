@@ -1,8 +1,9 @@
 # electron-react-app
 
-Electron + React template built on electron-conveyor (typed IPC + cross-window state). This
-branch (`main`) is the minimal shell; the interactive playground lives on the `demo` branch,
-which merges `main` forward — structural changes land here first.
+Electron + React template built on electron-conveyor (typed IPC + cross-window state). This is
+the `demo` branch: the interactive playground, built on the minimal shell from `main`. Shell,
+tooling, and conveyor-core changes land on `main` first and merge forward; only demo content
+(pages, demo modules/stores) is authored here.
 
 - When writing or editing any source, follow the house style in
   `.claude/skills/code-style/SKILL.md` — section banner format, comment tone and density.
