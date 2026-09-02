@@ -1,6 +1,6 @@
 # electron-react-app
 
-Electron + React template built on electron-conveyor (typed IPC + cross-window state). This is
+Electron + React starter kit built on electron-conveyor (typed IPC + cross-window state). This is
 the `demo` branch: the interactive playground, built on the minimal shell from `main`. Shell,
 tooling, and conveyor-core changes land on `main` first and merge forward; only demo content
 (pages, demo modules/stores) is authored here.
@@ -9,3 +9,4 @@ tooling, and conveyor-core changes land on `main` first and merge forward; only 
   section banner format, comment tone and density.
 - Checks: `npm run typecheck`, `npm run lint`, `npm run format`.
 - `conveyor/modules/*` run in main only; the renderer imports only `type AppRouter`.
+- README and CHANGELOG are shared with `main` — edit them there and merge forward, never here.
