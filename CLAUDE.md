@@ -1,6 +1,6 @@
 # electron-react-app
 
-Electron + React template built on electron-conveyor (typed IPC + cross-window state). This
+Electron + React starter kit built on electron-conveyor (typed IPC + cross-window state). This
 branch (`main`) is the minimal shell; the interactive playground lives on the `demo` branch,
 which merges `main` forward — structural changes land here first.
 
